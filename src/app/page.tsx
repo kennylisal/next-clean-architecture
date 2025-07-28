@@ -3,10 +3,11 @@ import { ColorModeContext } from "@/components/context/ColorMode";
 import { appTheme } from "@/components/theme/app-theme/appTheme";
 import { getThemeByName } from "@/components/theme/theme";
 import { ThemeConfigurator } from "@/components/theme/ThemeConfigurator";
+import { DummyJsonPostRepositories } from "@/infrastructure/repositories/post.repositories.dummyjson";
 import { ThemeProvider } from "@emotion/react";
 import { Analytics } from "@mui/icons-material";
 import { CssBaseline } from "@mui/material";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
@@ -21,6 +22,14 @@ export default function Home() {
     }),
     []
   );
+  useEffect(() => {
+    async function getPost() {
+      const getter = new DummyJsonPostRepositories();
+      const data = await getter.getPost(1);
+      console.log(data);
+    }
+    getPost();
+  }, []);
   const JobList = React.lazy(
     () => import("@/components/pages/jobs/jobs-list/JobsListPage")
   );
