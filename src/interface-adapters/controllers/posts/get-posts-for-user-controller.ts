@@ -1,4 +1,3 @@
-import { IPostRepository } from "@/application/repositories/posts.repository.interface";
 import { IGetPostForUserUseCase } from "@/application/use-case/get-posts-for-user-usecase";
 
 function presenter(posts: Post[]) {
@@ -9,6 +8,10 @@ function presenter(posts: Post[]) {
     tanggal: p.date,
   }));
 }
+
+export type IGetPostForUserUserController = ReturnType<
+  typeof getPostForUserController
+>;
 
 export const getPostForUserController =
   (getPostForUserUseCase: IGetPostForUserUseCase) =>

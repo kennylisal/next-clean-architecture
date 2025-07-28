@@ -2,10 +2,13 @@ import { createModule } from "@evyweb/ioctopus";
 import { DI_SYMBOLS } from "../types";
 import { MockPostRepositories } from "@/infrastructure/repositories/post.repository.mock";
 import { DummyJsonPostRepositories } from "@/infrastructure/repositories/post.repositories.dummyjson";
+import { getPostsForUserUsecase } from "@/application/use-case/get-posts-for-user-usecase";
+import { getPostForUserController } from "@/interface-adapters/controllers/posts/get-posts-for-user-controller";
 
 export function createPostsModule() {
   const postsModule = createModule();
 
+  //disini khusus untuk repo -> penentuan pengambilan data
   if (process.env.NODE_ENV == "test") {
     postsModule.bind(DI_SYMBOLS.IPostRepository).toClass(MockPostRepositories);
   } else {
@@ -13,6 +16,18 @@ export function createPostsModule() {
       .bind(DI_SYMBOLS.IPostRepository)
       .toClass(DummyJsonPostRepositories);
   }
+
+  postsModule
+    .bind(DI_SYMBOLS.IGetPostForUserUseCase)
+    .toHigherOrderFunction(getPostsForUserUsecase, [
+      DI_SYMBOLS.IPostRepository,
+    ]);
+
+  postsModule
+    .bind(DI_SYMBOLS.IGetPostForUserUserController)
+    .toHigherOrderFunction(getPostForUserController, [
+      DI_SYMBOLS.IGetPostForUserUseCase,
+    ]);
 
   return postsModule;
 }
