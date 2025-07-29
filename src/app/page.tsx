@@ -1,15 +1,13 @@
 "use client";
-import { getPostsForUserUsecase } from "@/application/use-case/get-posts-for-user-usecase";
 import { ColorModeContext } from "@/components/context/ColorMode";
 import { appTheme } from "@/components/theme/app-theme/appTheme";
-import { getThemeByName } from "@/components/theme/theme";
 import { ThemeConfigurator } from "@/components/theme/ThemeConfigurator";
-import { DummyJsonPostRepositories } from "@/infrastructure/repositories/post.repositories.dummyjson";
-import { getPostForUserController } from "@/interface-adapters/controllers/posts/get-posts-for-user-controller";
+
 import { ThemeProvider } from "@emotion/react";
 import { Analytics } from "@mui/icons-material";
 import { CssBaseline } from "@mui/material";
 import React, { Suspense, useEffect, useState } from "react";
+import { getInjection } from "../../DI/container";
 
 export default function Home() {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
@@ -27,6 +25,9 @@ export default function Home() {
   useEffect(() => {
     async function getPost() {
       //disini lanjut dependency injection
+      const getPostController = getInjection("IGetPostForUserUserController");
+      const result = await getPostController(2);
+      console.log(result);
     }
     getPost();
   }, []);

@@ -1,3 +1,4 @@
+import { PostsQuery } from "@/application/repositories/posts.repository.interface";
 import { IGetPostForUserUseCase } from "@/application/use-case/get-posts-for-user-usecase";
 
 function presenter(posts: Post[]) {
@@ -15,7 +16,10 @@ export type IGetPostForUserUserController = ReturnType<
 
 export const getPostForUserController =
   (getPostForUserUseCase: IGetPostForUserUseCase) =>
-  async (userId: number): Promise<ReturnType<typeof presenter>> => {
+  async (
+    userId: number,
+    query?: PostsQuery
+  ): Promise<ReturnType<typeof presenter>> => {
     const posts = await getPostForUserUseCase(userId);
     return presenter(posts);
   };
