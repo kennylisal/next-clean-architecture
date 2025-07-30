@@ -14,12 +14,13 @@ import MuiAppBar, { type AppBarProps } from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Navigation } from "./components/navigation/Navigation";
+import { NavigationAdmin } from "./components/navigation/Navigation-admin";
 
 import { ToolbarElements } from "./components/toolbar-elements/ToolbarElements";
 import { useAppNavigation } from "./components/navigation/hooks/use-app-navigation/useAppNavigation";
 
 import type { ReactNode } from "react";
+import { NavigationSiswa } from "./components/navigation/navigation-siswa";
 // import { Logo } from "../Logo";
 
 const drawerWidth = 280;
@@ -134,7 +135,8 @@ export function SidebarLayout({ children }: Props) {
             )}
           </IconButton>
         </DrawerHeader>
-        <Navigation />
+        {/* <NavigationAdmin /> */}
+        <NavigationSiswa />
       </Drawer>
       <Main open={isSidebarOpen}>
         {/*<DrawerHeader />*/}

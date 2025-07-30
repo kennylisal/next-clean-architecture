@@ -1,30 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import List from "@mui/material/List";
 import { NavigationItem } from "./components/navigation-item/NavigationItem";
-import {
-  AccountBoxOutlined,
-  DashboardOutlined,
-  DesignServicesOutlined,
-  ShapeLineOutlined,
-  ViewStreamOutlined,
-} from "@mui/icons-material";
+import { AccountBoxOutlined, DashboardOutlined } from "@mui/icons-material";
 import { useMemo } from "react";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 // import { useNotifications } from "../../../../hooks/api/use-notifications/useNotifications";
 
 import type { NavigationItemType } from "./components/navigation-item/types";
 import { routes } from "@/components/constant/route";
 
-export function Navigation() {
+export function NavigationSiswa() {
   const navigationItems: NavigationItemType[] = useMemo(
     () => [
       {
-        header: "Dashboards",
+        header: "POST",
       },
       {
         path: routes.dashboard,
-        label: "Dashboard",
+        label: "General",
         icon: (props: any) => <DashboardOutlined {...props} />,
       },
+      // {
+      //   path: routes.dashboard,
+      //   label: "For You",
+      //   icon: (props: any) => <AccountBoxIcon {...props} />,
+      // },
       {
         header: "Pages",
       },
@@ -54,44 +54,6 @@ export function Navigation() {
             label: "Create",
           },
         ],
-      },
-
-      {
-        header: "Documentation",
-      },
-      {
-        label: "Theme",
-        icon: (props: any) => <DesignServicesOutlined {...props} />,
-        items: [
-          {
-            path: routes.themeTypography,
-            label: "Typography",
-          },
-          {
-            path: routes.themeColors,
-            label: "Colors",
-          },
-        ],
-      },
-      {
-        label: "Components",
-        icon: (props: any) => <ShapeLineOutlined {...props} />,
-        items: [
-          {
-            path: routes.componentsButton,
-            label: "Button",
-          },
-        ],
-      },
-      {
-        header: "Navigation",
-      },
-      {
-        path: "",
-        label: "Number",
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
-        badgeText: `2`,
-        badgeColor: "primary",
       },
     ],
     []
