@@ -7,6 +7,6 @@ export type IGetPostForUserUseCase = ReturnType<typeof getPostsForUserUsecase>;
 
 export const getPostsForUserUsecase =
   (postRepository: IPostRepository) =>
-  (userId: number, query?: PostsQuery): Promise<Post[]> => {
-    return postRepository.getPostsForUser(userId, query);
+  (query: PostsQuery): Promise<Post[]> => {
+    return postRepository.getPostsForUser(query);
   };

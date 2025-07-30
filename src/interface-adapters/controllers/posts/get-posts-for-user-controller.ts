@@ -17,9 +17,10 @@ export type IGetPostForUserUserController = ReturnType<
 export const getPostForUserController =
   (getPostForUserUseCase: IGetPostForUserUseCase) =>
   async (
-    userId: number,
-    query?: PostsQuery
+    sessionId: string,
+    query: PostsQuery
   ): Promise<ReturnType<typeof presenter>> => {
-    const posts = await getPostForUserUseCase(userId);
+    //nanti tambahakn authentication disini
+    const posts = await getPostForUserUseCase(query);
     return presenter(posts);
   };

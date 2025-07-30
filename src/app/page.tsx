@@ -26,7 +26,7 @@ export default function Home() {
     async function getPost() {
       //disini lanjut dependency injection
       const getPostController = getInjection("IGetPostForUserUserController");
-      const result = await getPostController(2);
+      const result = await getPostController("", { itemPerPage: 10, page: 1 });
       console.log(result);
     }
     getPost();
