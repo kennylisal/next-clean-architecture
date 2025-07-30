@@ -21,6 +21,13 @@ import { useAppNavigation } from "./components/navigation/hooks/use-app-navigati
 
 import type { ReactNode } from "react";
 import { NavigationSiswa } from "./components/navigation/navigation-siswa";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 // import { Logo } from "../Logo";
 
 const drawerWidth = 280;
@@ -102,6 +109,17 @@ export function SidebarLayout({ children }: Props) {
               <MenuIcon />
             </IconButton>
             <ToolbarElements />
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton>
+                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </Stack>
         </Toolbar>
       </AppBar>

@@ -16,6 +16,13 @@ import { PostAdd } from "@mui/icons-material";
 import { PageHeader } from "@/components/page-header/PageHeader";
 import { JobsSearch } from "@/components/widget/jobs/jobs-search/JobsSearch";
 import jobs from "@/components/mocks/jobs/jobs.json";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 const CardWrapper = styled(Card)(({ theme }) => ({
   marginBottom: 10,
