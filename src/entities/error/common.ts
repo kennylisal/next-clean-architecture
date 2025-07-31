@@ -16,6 +16,12 @@ export class SignUpError extends Error {
   }
 }
 
+export class SignInError extends Error {
+  constructor(message: string, opstions?: ErrorOptions) {
+    super(message, opstions);
+  }
+}
+
 export class UnexpectedError extends Error {
   constructor(message: string, options?: ErrorOptions) {
     super(message, options);

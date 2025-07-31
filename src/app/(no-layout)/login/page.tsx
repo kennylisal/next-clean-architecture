@@ -1,5 +1,8 @@
 "use client";
+
+import { SignUpError } from "@/entities/error/common";
 import { LoginUser, loginUserSchema } from "@/entities/models/user";
+import { useSignIn } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
@@ -12,11 +15,11 @@ import {
 import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
+  const { isLoaded, signIn, setActive } = useSignIn();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    control,
     setError,
   } = useForm<LoginUser>({
     resolver: zodResolver(loginUserSchema),
@@ -27,8 +30,32 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginUser) => {
-    console.log(data);
+    if (!isLoaded) {
+      setError("root", { message: "Clerk is not loaded" });
+      return;
+    }
+
+    try {
+      const result = await signIn.create({
+        identifier: data.email,
+        password: data.password,
+      });
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        alert("Sign-in successful! You are now logged in.");
+        // Optionally redirect to a dashboard
+        // window.location.href = '/dashboard';
+      } else {
+        setError("root", { message: "Sign-in failed. Please try again." });
+      }
+    } catch (error) {
+      const message = "Error ketika sign-in";
+      throw new SignUpError(message);
+    }
   };
+
+  if (!isLoaded) return <Box>Loading...</Box>;
 
   return (
     <Box className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -57,11 +84,10 @@ export default function LoginPage() {
             color="text.secondary"
             gutterBottom
           >
-            Welcome, please fill in your details to create an account.
+            Welcome back, please enter your credentials to sign in.
           </Typography>
 
           {/* Form Fields */}
-
           <TextField
             fullWidth
             label="Email"
@@ -83,21 +109,28 @@ export default function LoginPage() {
             helperText={errors.password?.message}
           />
 
+          {/* Root-level Error */}
+          {errors.root && (
+            <Typography variant="body2" color="error" align="center">
+              {errors.root.message}
+            </Typography>
+          )}
+
           {/* Submit Button */}
           <Button
             variant="contained"
             color="primary"
             size="large"
-            sx={{ mt: 2 }}
             type="submit"
             disabled={isSubmitting}
+            sx={{ mt: 2 }}
           >
-            {isSubmitting ? "Signing Up..." : "Sign Up"}
+            {isSubmitting ? "Signing In..." : "Sign In"}
           </Button>
 
           {/* Footer */}
           <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-            Dont have an account?{" "}
+            Don’t have an account?{" "}
             <Link href="/sign-up" underline="hover">
               Sign Up
             </Link>
@@ -115,28 +148,3 @@ export default function LoginPage() {
     </Box>
   );
 }
-
-// const processSignIn = async (data: CreateUser) => {
-//   if (!isLoaded) return;
-//   try {
-//     await signUp.create({
-//       emailAddress: formData.email,
-//       password: formData.password,
-//     });
-
-//     await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
-//     await signUp.update({
-//       unsafeMetadata: {
-//         fullName: data.fullName,
-//         role: data.role,
-//       },
-//     });
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       throw new SignUpError(error.message);
-//     } else {
-//       throw new UnexpectedError("Terjadi Error unexpected");
-//     }
-//   }
-// };
