@@ -2,9 +2,9 @@ import z from "zod";
 
 export const userSchema = z.object({
   id: z.number(),
-  email: z.string(),
-  role: z.string(),
-  fullName: z.string(),
+  email: z.email(),
+  role: z.enum(["student", "admin"]),
+  fullName: z.string().min(5),
 });
 
 export type User = z.infer<typeof userSchema>;

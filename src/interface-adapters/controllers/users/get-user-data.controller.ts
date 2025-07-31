@@ -11,9 +11,9 @@ function presenter(userData: User) {
 }
 
 export const getUserDataController =
-  (getUserDataController: IGetUserDataUseCase) =>
+  (getUserDataUseCase: IGetUserDataUseCase) =>
   async (userId: number): Promise<ReturnType<typeof presenter>> => {
-    const data = await getUserDataController(userId);
+    const data = await getUserDataUseCase(userId);
     if (data) return presenter(data);
     else {
       throw new DataNotFoundError("Data tidak ditemukan");
