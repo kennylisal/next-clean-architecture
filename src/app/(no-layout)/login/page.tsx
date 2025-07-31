@@ -1,55 +1,41 @@
 "use client";
-import { CreateUser } from "@/entities/models/user";
-import { SignIn, useSignUp } from "@clerk/nextjs";
+import { LoginUser, loginUserSchema } from "@/entities/models/user";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
   Container,
-  FormControl,
-  InputLabel,
   Link,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
-  const basicFormData: CreateUser = {
-    email: "",
-    fullName: "",
-    password: "",
-    role: "student",
-  };
-  const [formData, setFormData] = useState(basicFormData);
-  const { isLoaded, signUp } = useSignUp();
-  const [role, setRole] = useState<string>("student");
-  const handleRoleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setRole(value);
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const onSubmit = async (data: CreateUser) => {
-    if (!isLoaded) return;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    control,
+    setError,
+  } = useForm<LoginUser>({
+    resolver: zodResolver(loginUserSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-    try {
-      await signUp.create({
-        emailAddress: formData.email,
-        password: formData.password,
-      });
-
-      await signUp.prepareEmailAddressVerification;
-    } catch (error) {}
+  const onSubmit = async (data: LoginUser) => {
+    console.log(data);
   };
+
   return (
     <Box className="min-h-screen flex items-center justify-center bg-gray-100">
       <Container maxWidth="sm">
         <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
           sx={{
             bgcolor: "white",
             boxShadow: 3,
@@ -63,7 +49,7 @@ export default function LoginPage() {
         >
           {/* Header */}
           <Typography variant="h4" component="h1" align="center" gutterBottom>
-            Sign Up
+            Sign In
           </Typography>
           <Typography
             variant="subtitle1"
@@ -75,22 +61,16 @@ export default function LoginPage() {
           </Typography>
 
           {/* Form Fields */}
-          <TextField
-            fullWidth
-            label="Full Name"
-            variant="outlined"
-            margin="normal"
-            name="fullName"
-            onChange={handleInputChange}
-          />
+
           <TextField
             fullWidth
             label="Email"
             type="email"
             variant="outlined"
             margin="normal"
-            name="email"
-            onChange={handleInputChange}
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
           <TextField
             fullWidth
@@ -98,16 +78,10 @@ export default function LoginPage() {
             type="password"
             variant="outlined"
             margin="normal"
-            name="password"
-            onChange={handleInputChange}
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
-          <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel>Role</InputLabel>
-            <Select value={role} onChange={handleRoleChange} label="Role">
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
-            </Select>
-          </FormControl>
 
           {/* Submit Button */}
           <Button
@@ -115,18 +89,17 @@ export default function LoginPage() {
             color="primary"
             size="large"
             sx={{ mt: 2 }}
-            onClick={() =>
-              alert(`Sign Up Submitted! Role: ${role || "Not selected"}`)
-            }
+            type="submit"
+            disabled={isSubmitting}
           >
-            Sign Up
+            {isSubmitting ? "Signing Up..." : "Sign Up"}
           </Button>
 
           {/* Footer */}
           <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-            Already have an account?{" "}
-            <Link href="/sign-in" underline="hover">
-              Sign In
+            Dont have an account?{" "}
+            <Link href="/sign-up" underline="hover">
+              Sign Up
             </Link>
           </Typography>
           <Typography
@@ -142,3 +115,28 @@ export default function LoginPage() {
     </Box>
   );
 }
+
+// const processSignIn = async (data: CreateUser) => {
+//   if (!isLoaded) return;
+//   try {
+//     await signUp.create({
+//       emailAddress: formData.email,
+//       password: formData.password,
+//     });
+
+//     await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+//     await signUp.update({
+//       unsafeMetadata: {
+//         fullName: data.fullName,
+//         role: data.role,
+//       },
+//     });
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       throw new SignUpError(error.message);
+//     } else {
+//       throw new UnexpectedError("Terjadi Error unexpected");
+//     }
+//   }
+// };

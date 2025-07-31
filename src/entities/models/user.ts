@@ -18,3 +18,9 @@ export const createUserSchema = userSchema
   .merge(z.object({ password: z.string().min(6).max(255) }));
 
 export type CreateUser = z.infer<typeof createUserSchema>;
+
+export const loginUserSchema = userSchema
+  .pick({ email: true })
+  .merge(z.object({ password: z.string().min(6).max(255) }));
+
+export type LoginUser = z.infer<typeof loginUserSchema>;
