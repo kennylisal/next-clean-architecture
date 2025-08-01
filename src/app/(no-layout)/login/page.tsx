@@ -12,6 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
@@ -55,7 +56,12 @@ export default function LoginPage() {
     }
   };
 
-  if (!isLoaded) return <Box>Loading...</Box>;
+  if (!isLoaded)
+    return (
+      <Box>
+        <h2>Loading...</h2>
+      </Box>
+    );
 
   return (
     <Box className="min-h-screen flex items-center justify-center bg-gray-100">
