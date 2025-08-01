@@ -1,5 +1,6 @@
 import knex from "knex";
-
+import { config } from "dotenv";
+config({ path: ".env.example" });
 const knexDB = knex({
   client: "pg",
   connection: {
