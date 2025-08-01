@@ -1,0 +1,6 @@
+CREATE TABLE POSTS(
+    post_id bigint GENERATED ALWAYS AS IDENTITY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    body TEXT,
+    author VARCHAR(60)
+)
