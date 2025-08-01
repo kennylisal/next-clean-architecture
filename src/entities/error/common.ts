@@ -27,3 +27,11 @@ export class UnexpectedError extends Error {
     super(message, options);
   }
 }
+
+export class DatabaseError extends Error {
+  operation: string;
+  constructor(message: string, operation: string, options?: ErrorOptions) {
+    super(message, options);
+    this.operation = operation;
+  }
+}
