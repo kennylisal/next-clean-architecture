@@ -1,10 +1,10 @@
 import z from "zod";
 
-interface Post {
-  id: number;
+export interface Post {
+  post_id: number;
   title: string;
-  date: string;
-  author: number;
+  created_at: string;
+  author: string;
   body: string;
 }
 
