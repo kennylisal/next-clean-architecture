@@ -15,3 +15,10 @@ export const createPostSchema = z.object({
 });
 
 export type CreatePost = z.infer<typeof createPostSchema>;
+
+export interface PostHeader {
+  post_id: number;
+  title: string;
+  created_at: string;
+  author: string;
+}

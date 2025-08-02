@@ -17,7 +17,7 @@ export class PostSQLRepositories implements IPostRepository {
     const pageSize = Math.max(10, Math.min(100, request.itemPerPage));
     const offset = (page - 1) * pageSize;
 
-    const query = knexDB("POSTS").select(
+    const query = knexDB("posts").select(
       "post_id",
       "title",
       "created_at",

@@ -1,13 +1,20 @@
 import { PostsQuery } from "@/application/repositories/posts.repository.interface";
 import { IGetPostForUserUseCase } from "@/application/use-case/get-posts-for-user-usecase";
+import { Post, PostHeader } from "@/entities/models/post";
+import { QueryResponse } from "@/entities/models/response";
 
-function presenter(posts: Post[]) {
-  return posts.map((p) => ({
-    id: p.id,
+function presenter(response: QueryResponse<Post[]>) {
+  const data: PostHeader[] = response.data.map((p) => ({
+    post_id: p.post_id,
     title: p.title,
     author: "Manager",
-    tanggal: p.date,
+    created_at: p.created_at,
   }));
+  return {
+    page: response.page,
+    totalItem: response.totalCount,
+    data: data,
+  };
 }
 
 export type IGetPostForUserUserController = ReturnType<

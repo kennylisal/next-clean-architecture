@@ -9,7 +9,7 @@ export function createPostsModule() {
   const postsModule = createModule();
 
   //disini khusus untuk repo -> penentuan pengambilan data
-  if (process.env.NODE_ENV !== "test") {
+  if (process.env.NODE_ENV === "test") {
     postsModule.bind(DI_SYMBOLS.IPostRepository).toClass(MockPostRepositories);
   } else {
     postsModule.bind(DI_SYMBOLS.IPostRepository).toClass(PostSQLRepositories);
