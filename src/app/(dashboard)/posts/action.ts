@@ -1,6 +1,6 @@
 "use server";
 import { PostsQuery } from "@/application/repositories/posts.repository.interface";
-import { getInjection } from "../../../DI/container";
+import { getInjection } from "../../../../DI/container";
 
 export async function getPostsDashboard(request: PostsQuery) {
   try {
