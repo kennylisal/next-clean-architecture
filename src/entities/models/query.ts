@@ -1,4 +1,4 @@
-export interface RequestQuery {
+export interface PaginationQuery {
   page: number;
   itemPerPage: number;
 }

@@ -3,10 +3,9 @@ import {
   PostsQuery,
 } from "@/application/repositories/posts.repository.interface";
 import knexDB from "../config/knex_db";
-import { Post } from "@/entities/models/post";
+import { CreatePost, Post } from "@/entities/models/post";
 import executeQuery from "../utils/query-helper";
 import { QueryResponse } from "@/entities/models/response";
-
 export class PostSQLRepositories implements IPostRepository {
   async getPost(id: number): Promise<Post> {
     const query = knexDB("POSTS").select("*").where("post_id", "=", id).first();
@@ -29,11 +28,24 @@ export class PostSQLRepositories implements IPostRepository {
       if (request.dateEnd && request.dateStart) {
         query.whereBetween("created_at", [request.dateStart, request.dateEnd]);
       }
+      if (!request.orderBy) {
+        if (request.orderBy === "newest") {
+          query.orderBy("created_at", "desc");
+        } else {
+          query.orderBy("created_at", "asc");
+        }
+      } else {
+        query.orderBy("created_at", "desc");
+      }
+      if (request.search) {
+        query.where("title", "ilike", `%${request.search}%`);
+      }
     });
 
     const countQuery = await query
       .clone()
       .clearSelect()
+      .clearOrder()
       .count("* as total")
       .first();
     query.limit(pageSize).offset(offset);
@@ -44,5 +56,11 @@ export class PostSQLRepositories implements IPostRepository {
       data: res,
       totalCount: countQuery ? Number(countQuery.total) : 0,
     };
+  }
+
+  async createPost(schema: CreatePost): Promise<boolean> {
+    const query = knexDB("posts").insert(schema);
+    await executeQuery(query, "INSERT", "posts");
+    return true;
   }
 }
