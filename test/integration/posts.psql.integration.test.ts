@@ -1,4 +1,5 @@
 import { PostsQuery } from "@/application/repositories/posts.repository.interface";
+import { CreateDomain, Domain } from "@/entities/models/domain";
 import knexDB from "@/infrastructure/config/knex_db";
 import { PostSQLRepositories } from "@/infrastructure/repositories/post.repository.sql";
 import { faker } from "@faker-js/faker";
@@ -21,11 +22,31 @@ describe("PostSQLRepositories Integration Tests", () => {
 describe("getPost should retrieve based on needs", () => {
   //
   //top-arrange
+  let domainArr: { domain_id: number }[] = [];
+  beforeAll(async () => {
+    const domains: CreateDomain[] = [
+      {
+        description: "deskripsi domain 1",
+        domain_name: "general",
+        domain_visibility: "public",
+      },
+      {
+        description: "deskripsi domain 2",
+        domain_name: "spesific",
+        domain_visibility: "restricted",
+      },
+    ];
+    const res: { domain_id: number }[] = await knexDB("domains")
+      .insert(domains)
+      .returning("domain_id");
+    domainArr = res;
+  });
   beforeAll(async () => {
     const postsData = Array.from({ length: 20 }).map((_) => ({
       body: faker.lorem.paragraphs({ min: 2, max: 4 }),
       title: faker.lorem.words({ min: 4, max: 10 }),
       author: faker.string.alphanumeric(10),
+      domain_id: domainArr[0].domain_id,
     }));
     const dataForTesting = [
       {
@@ -33,24 +54,28 @@ describe("getPost should retrieve based on needs", () => {
         author: "Author 1",
         body: "This is the body of post 1",
         created_at: "2023-01-01 10:00:00",
+        domain_id: domainArr[1].domain_id,
       },
       {
         title: "Post 2",
         author: "Author 2",
         body: "This is the body of post 2",
         created_at: "2023-01-02 12:00:00",
+        domain_id: domainArr[1].domain_id,
       },
       {
         title: "Post 3",
         author: "Author 3",
         body: "This is the body of post 3",
         created_at: "2023-01-03 15:00:00",
+        domain_id: domainArr[1].domain_id,
       },
       {
         title: "Post Pencarian",
         author: "Author 4",
         body: "This is the body of post 4",
         created_at: "2025-01-03 15:00:00",
+        domain_id: domainArr[1].domain_id,
       },
     ];
     await knexDB("posts").insert([...postsData, ...dataForTesting]);
