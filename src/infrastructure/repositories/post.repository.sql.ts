@@ -79,7 +79,6 @@ export class PostSQLRepositories implements IPostRepository {
 
     const query = knexDB("posts")
       .select("posts.*", "domains.domain_name as domain")
-      .select("posts.*", "domains.domain_name as domain")
       .whereRaw(`posts.domain_id in ${domains}`);
 
     query.modify((query) => {
@@ -132,6 +131,10 @@ export class PostSQLRepositories implements IPostRepository {
       if (request.dateEnd && request.dateStart) {
         query.whereBetween("created_at", [request.dateStart, request.dateEnd]);
       }
+
+      if (request.search) {
+        query.where("title", "ilike", `%${request.search}%`);
+      }
       if (!request.orderBy) {
         if (request.orderBy === "newest") {
           query.orderBy("created_at", "desc");
@@ -140,9 +143,6 @@ export class PostSQLRepositories implements IPostRepository {
         }
       } else {
         query.orderBy("created_at", "desc");
-      }
-      if (request.search) {
-        query.where("title", "ilike", `%${request.search}%`);
       }
     });
     const countQuery = await query
