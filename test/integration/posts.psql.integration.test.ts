@@ -73,8 +73,8 @@ describe("getPost should retrieve based on needs", () => {
     };
 
     //act
-    const page1Result = await repository.getPostsForUser(page1request);
-    const page2Result = await repository.getPostsForUser(page2request);
+    const page1Result = await repository.getGeneralPost(page1request);
+    const page2Result = await repository.getGeneralPost(page2request);
 
     //assert
     expect(page1Result.data).toHaveLength(10);
@@ -93,7 +93,7 @@ describe("getPost should retrieve based on needs", () => {
       dateStart: "2023-01-01T00:00:01.000Z",
       dateEnd: "2023-01-03T23:00:00.000Z",
     };
-    const res = await repository.getPostsForUser(postRequest);
+    const res = await repository.getGeneralPost(postRequest);
 
     //assert
     expect(res.data).toHaveLength(3);
@@ -104,7 +104,7 @@ describe("getPost should retrieve based on needs", () => {
     const repository = new PostSQLRepositories();
 
     //act
-    const res = await repository.getPostsForUser({
+    const res = await repository.getGeneralPost({
       itemPerPage: 10,
       page: 1,
       search: "post pen",

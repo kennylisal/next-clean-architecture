@@ -7,11 +7,14 @@ import { CreatePost, Post } from "@/entities/models/post";
 import executeQuery from "../utils/query-helper";
 import { QueryResponse } from "@/entities/models/response";
 export class PostSQLRepositories implements IPostRepository {
+  getUserPost(query: PostsQuery): Promise<QueryResponse<Post[]>> {
+    throw new Error("Method not implemented.");
+  }
   async getPost(id: number): Promise<Post> {
     const query = knexDB("POSTS").select("*").where("post_id", "=", id).first();
     return await executeQuery(query, "SELECT", "POSTS");
   }
-  async getPostsForUser(request: PostsQuery): Promise<QueryResponse<Post[]>> {
+  async getGeneralPost(request: PostsQuery): Promise<QueryResponse<Post[]>> {
     const page = Math.max(1, request.page);
     const pageSize = Math.max(10, Math.min(100, request.itemPerPage));
     const offset = (page - 1) * pageSize;

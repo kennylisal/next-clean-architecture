@@ -6,6 +6,7 @@ export interface Post {
   created_at: string;
   author: string;
   body: string;
+  domain: string;
 }
 
 export const createPostSchema = z.object({

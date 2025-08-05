@@ -7,10 +7,12 @@ export interface PostsQuery extends PaginationQuery {
   dateEnd?: string;
   orderBy?: "newest" | "oldest";
   search?: string;
+  domain?: string[];
 }
 export interface IPostRepository {
   getPost(id: number): Promise<Post | undefined>;
-  getPostsForUser(query: PostsQuery): Promise<QueryResponse<Post[]>>;
+  getGeneralPost(query: PostsQuery): Promise<QueryResponse<Post[]>>;
   createPost(schema: CreatePost): Promise<boolean>;
   getUserPost(query: PostsQuery): Promise<QueryResponse<Post[]>>;
+  getPostForUser(query: PostsQuery): Promise<QueryResponse<Post[]>>;
 }
