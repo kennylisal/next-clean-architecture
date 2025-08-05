@@ -35,6 +35,12 @@ export class MockPostRepositories implements IPostRepository {
       },
     ];
   }
+  createPost(schema: CreatePost): Promise<number> {
+    throw new Error("Method not implemented.");
+  }
+  getPostForUser(query: PostsQuery): Promise<QueryResponse<Post[]>> {
+    throw new Error("Method not implemented.");
+  }
   async getUserPost(query: PostsQuery): Promise<QueryResponse<Post[]>> {
     return {
       page: 1,
@@ -59,12 +65,9 @@ export class MockPostRepositories implements IPostRepository {
       ],
     };
   }
-  async createPost(schema: CreatePost): Promise<boolean> {
-    return true;
-  }
 
-  async getPost(id: number): Promise<Post | undefined> {
-    return this._posts.find((p) => p.post_id === id);
+  async getPost(id: number): Promise<Post> {
+    return this._posts[0];
   }
   async getGeneralPost(request: PostsQuery): Promise<QueryResponse<Post[]>> {
     return {

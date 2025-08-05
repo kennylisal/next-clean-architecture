@@ -7,7 +7,14 @@ export const userSchema = z.object({
   fullName: z.string().min(5),
 });
 
-export type User = z.infer<typeof userSchema>;
+// export type User = z.infer<typeof userSchema>;
+export interface User {
+  id: string;
+  email: string;
+  role: string;
+  fullName: string;
+  Domain: string[];
+}
 
 export const createUserSchema = userSchema
   .pick({
