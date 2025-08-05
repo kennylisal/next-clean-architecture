@@ -1,4 +1,7 @@
 CREATE TYPE DOMAIN_VISIBILITY_TYPE AS ENUM ('public', 'restricted', 'private');
+CREATE TYPE DOMAIN_MEMBERSHIP_ACCEPTANCE AS ENUM ('open', 'invite-only', 'confirmation');
+CREATE TYPE DOMAIN_MEMBERSHIP_ROLE AS ENUM ('member', 'moderator', 'admin');
+CREATE TYPE DOMAIN_STATUS AS ENUM ('active', 'banned', 'expired', 'suspended');
 
 DROP TABLE IF EXISTS domains;
 CREATE TABLE IF NOT EXISTS domains(
@@ -6,7 +9,9 @@ CREATE TABLE IF NOT EXISTS domains(
     domain_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     description text,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    domain_visibility DOMAIN_VISIBILITY_TYPE NOT NULL
+    domain_visibility DOMAIN_VISIBILITY_TYPE NOT NULL,
+    membership_acceptance DOMAIN_MEMBERSHIP_ACCEPTANCE NOT NULL,
+    domain_status DOMAIN_STATUS NOT NULL
 );
 
 DROP TABLE IF EXISTS posts;
@@ -20,3 +25,20 @@ CREATE TABLE IF NOT EXISTS posts (
     FOREIGN KEY (domain_id) REFERENCES domains(domain_id)
 );
 
+DROP TABLE IF EXISTS domains_membership;
+CREATE TABLE IF NOT EXISTS domains_membership(
+    member_id VARCHAR(155) NOT NULL,
+    domain_id INT NOT NULL,
+    member_role DOMAIN_MEMBERSHIP_ROLE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    membership_status DOMAIN_STATUS NOT NULL,
+    membership_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+);
+
+DROP TABLE IF EXISTS action_logs;
+CREATE TABLE IF NOT EXISTS action_logs(
+    table_name VARCHAR(75) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    document_id bigint NOT NULL,
+    logs_message TEXT NOT NULL
+);
