@@ -12,4 +12,5 @@ export interface IPostRepository {
   getPost(id: number): Promise<Post | undefined>;
   getPostsForUser(query: PostsQuery): Promise<QueryResponse<Post[]>>;
   createPost(schema: CreatePost): Promise<boolean>;
+  getUserPost(query: PostsQuery): Promise<QueryResponse<Post[]>>;
 }

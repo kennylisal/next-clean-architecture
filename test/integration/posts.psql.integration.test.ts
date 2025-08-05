@@ -130,5 +130,3 @@ describe("getPost should retrieve based on needs", () => {
     expect(res).toBe(true);
   });
 });
-
-// describe("getPostsDetail", () => {});
