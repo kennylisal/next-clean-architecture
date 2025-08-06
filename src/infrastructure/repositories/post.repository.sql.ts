@@ -94,7 +94,7 @@ export class PostSQLRepositories implements IPostRepository {
       "INSERT",
       "posts"
     );
-    return result[0].post_id;
+    return Number(result[0].post_id);
   }
 
   applyQueryFilters(

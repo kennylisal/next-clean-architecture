@@ -4,7 +4,7 @@ import {
 } from "@/entities/models/domain-membership";
 
 export interface IDomainMembershipRepository {
-  getDomainsMember(domainId: number): Promise<number>;
+  getDomainMemberCount(domainId: number): Promise<number>;
   getDomainMemberStatus(
     member_id: string,
     domain_id: number

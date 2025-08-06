@@ -13,7 +13,7 @@ export class DomainsMembershipSQLRepositories
     member_id: string,
     domain_id: number
   ): Promise<DomainMembership | undefined> {
-    const query = knexDB("domain_membership")
+    const query = knexDB("domains_membership")
       .where({
         member_id: member_id,
         domain_id: domain_id,
@@ -21,7 +21,7 @@ export class DomainsMembershipSQLRepositories
       .first();
     return await executeQuery(query, "READ", "domains_membership");
   }
-  async getDomainsMember(domainId: number): Promise<number> {
+  async getDomainMemberCount(domainId: number): Promise<number> {
     const query = knexDB("domains_membership")
       .where("domain_id", "=", domainId)
       .count("* as count");
@@ -31,7 +31,7 @@ export class DomainsMembershipSQLRepositories
       "domains_membership"
     )) as [{ count: number }];
 
-    return result[0].count;
+    return Number(result[0].count);
   }
   async createDomainMembership(
     schema: CreateDomainMembership
@@ -45,7 +45,7 @@ export class DomainsMembershipSQLRepositories
       "INSERT",
       "domains_membership"
     );
-    return await result[0].membership_id;
+    return Number(result[0].membership_id);
   }
   async getMembershipDetail(membershipId: number): Promise<DomainMembership> {
     const query = knexDB("domains_membership")

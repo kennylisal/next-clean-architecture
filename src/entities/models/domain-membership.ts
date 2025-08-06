@@ -14,8 +14,8 @@ export interface DomainMembership {
 export const createDomainMembershipSchema = z.object({
   member_id: z.string(),
   domain_id: z.number(),
-  membership_status: z.string(),
-  member_role: z.string(),
+  membership_status: z.enum(["active", "banned", "expired", "suspended"]),
+  member_role: z.enum(["member", "moderator", "admin", "creator"]),
 });
 
 export type CreateDomainMembership = z.infer<
