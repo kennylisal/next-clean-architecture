@@ -146,7 +146,7 @@ export class PostSQLRepositories implements IPostRepository {
     const query = knexDB("posts")
       .select("posts.*", "domains.domain_name as domain")
       .where("post_id", "=", id)
-      .join("domains", "domains.domain_id", "posts.domain_is")
+      .join("domains", "domains.domain_id", "posts.domain_id")
       .first();
     return await executeQuery(query, "SELECT", "POSTS");
   }

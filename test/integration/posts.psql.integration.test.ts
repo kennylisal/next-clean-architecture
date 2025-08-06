@@ -181,7 +181,11 @@ describe("getPosts should retrieve based on needs", () => {
     //assert
     expect(res.data[0].title).toBe("Post Pencarian");
   });
+});
 
+let testtedPostId = 0;
+
+describe("createPost should add new post data", () => {
   it("should add new post data to DB", async () => {
     //arrange
     const repository = new PostSQLRepositories();
@@ -194,8 +198,16 @@ describe("getPosts should retrieve based on needs", () => {
     };
     //act
     const res = await repository.createPost(newData);
-
+    testtedPostId = Number(res);
     //assert
-    expect(Number(res)).toBeGreaterThan(24);
+    expect(testtedPostId).toBeGreaterThan(24);
+  });
+});
+
+describe("getPost should get post detail", () => {
+  it("should retrieve post detail based on id", async () => {
+    const repository = new PostSQLRepositories();
+    const res = await repository.getPost(testtedPostId);
+    expect(Number(res.post_id)).toStrictEqual(testtedPostId);
   });
 });
