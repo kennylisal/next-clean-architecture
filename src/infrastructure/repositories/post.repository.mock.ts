@@ -69,7 +69,7 @@ export class MockPostRepositories implements IPostRepository {
   async getPost(id: number): Promise<Post> {
     return this._posts[0];
   }
-  async getGeneralPost(request: PostsQuery): Promise<QueryResponse<Post[]>> {
+  async getPosts(request: PostsQuery): Promise<QueryResponse<Post[]>> {
     return {
       data: this._posts,
       page: 1,

@@ -12,6 +12,9 @@ export const createDomainSchema = z.object({
   domain_name: z.string().min(5),
   domain_visibility: z.enum(["public", "restricted", "private"]),
   description: z.string(),
+  domain_id: z.number().optional(),
+  membership_acceptance: z.enum(["open", "invite-only", "confirmation"]),
+  domain_status: z.enum(["active", "banned", "expired", "suspended"]),
 });
 
 export type CreateDomain = z.infer<typeof createDomainSchema>;

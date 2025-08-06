@@ -8,7 +8,7 @@ import executeQuery from "../utils/query-helper";
 import { QueryResponse } from "@/entities/models/response";
 import { Knex } from "knex";
 export class PostSQLRepositories implements IPostRepository {
-  async getGeneralPost(request: PostsQuery): Promise<QueryResponse<Post[]>> {
+  async getPosts(request: PostsQuery): Promise<QueryResponse<Post[]>> {
     const page = Math.max(1, request.page);
     const pageSize = Math.max(10, Math.min(100, request.itemPerPage));
     const offset = (page - 1) * pageSize;
