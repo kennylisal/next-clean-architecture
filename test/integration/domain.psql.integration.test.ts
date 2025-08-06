@@ -7,6 +7,9 @@ import { DomainsSQLRepositories } from "@/infrastructure/repositories/domains.re
 //act -> gathering data or executing something to be tested
 //assert => testing the result of act
 describe("DomainSQLRepositories Integration Tests", () => {
+  beforeAll(async () => {
+    await knexDB.raw("TRUNCATE TABLE posts, domains RESTART IDENTITY CASCADE");
+  });
   const domainData: CreateDomain = {
     description: "deskripsi domain 1",
     domain_name: "general",
@@ -15,9 +18,7 @@ describe("DomainSQLRepositories Integration Tests", () => {
     domain_status: "active",
     membership_acceptance: "open",
   };
-  beforeAll(async () => {
-    await knexDB.raw("TRUNCATE TABLE domains RESTART IDENTITY CASCADE");
-  });
+
   it("should be connected to psqlDB", async () => {
     let isConnected = false;
     try {
@@ -42,5 +43,9 @@ describe("DomainSQLRepositories Integration Tests", () => {
     const res = await repo.getDomainDetail(domainData.domain_id!);
     console.log("getDomainDetail result:", JSON.stringify(res, null, 2));
     expect(res.domain_id).toStrictEqual(domainData.domain_id!);
+  });
+
+  afterAll(async () => {
+    await knexDB.raw("TRUNCATE TABLE posts, domains RESTART IDENTITY CASCADE");
   });
 });

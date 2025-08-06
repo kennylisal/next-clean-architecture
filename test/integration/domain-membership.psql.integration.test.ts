@@ -134,4 +134,8 @@ describe("DomainMembershipSQLRepositories Integration Tests", () => {
     const res = await repo.getUserMemberships(memberData[1].member_id);
     expect(res).toHaveLength(2);
   });
+
+  afterAll(async () => {
+    await knexDB.raw("TRUNCATE TABLE posts, domains RESTART IDENTITY CASCADE");
+  });
 });

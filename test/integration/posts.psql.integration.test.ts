@@ -22,6 +22,7 @@ describe("PostSQLRepositories Integration Tests", () => {
   beforeAll(async () => {
     await knexDB.raw("TRUNCATE TABLE posts, domains RESTART IDENTITY CASCADE");
   });
+
   it("should be connected to psqlDB", async () => {
     let isConnected = false;
     try {
@@ -209,5 +210,9 @@ describe("getPost should get post detail", () => {
     const repository = new PostSQLRepositories();
     const res = await repository.getPost(testtedPostId);
     expect(Number(res.post_id)).toStrictEqual(testtedPostId);
+  });
+
+  afterAll(async () => {
+    await knexDB.raw("TRUNCATE TABLE posts, domains RESTART IDENTITY CASCADE");
   });
 });
