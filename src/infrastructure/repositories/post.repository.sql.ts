@@ -10,19 +10,16 @@ import { Knex } from "knex";
 export class PostSQLRepositories implements IPostRepository {
   async getPosts(request: PostsQuery): Promise<QueryResponse<Post[]>> {
     const page = Math.max(1, request.page);
-    const pageSize = Math.max(10, Math.min(100, request.itemPerPage));
-    const offset = (page - 1) * pageSize;
 
     let query = knexDB("posts")
       .select("post_id", "title", "created_at", "author", "body")
       .where("domain_id", "=", request.domain ?? 1);
-
     query = this.applyQueryFilters(query, request);
+
     const { queryResult, totalCount } = await this.applyQueryPagination(
       query,
       request
     );
-
     const res: Post[] = await executeQuery(queryResult, "SELECT", "POSTS");
 
     return {
@@ -37,44 +34,23 @@ export class PostSQLRepositories implements IPostRepository {
     userId: string
   ): Promise<QueryResponse<Post[]>> {
     const page = Math.max(1, request.page);
-    const pageSize = Math.max(10, Math.min(100, request.itemPerPage));
-    const offset = (page - 1) * pageSize;
 
-    const query = knexDB("posts")
+    let query = knexDB("posts")
       .select("posts.*", "domains.domain_name as domain")
       .where("posts.author", "=", userId)
       .join("domains", "domains.domain_id", "posts.domain_is");
-    query.modify((query) => {
-      if (request.dateEnd && request.dateStart) {
-        query.whereBetween("created_at", [request.dateStart, request.dateEnd]);
-      }
+    query = this.applyQueryFilters(query, request);
 
-      if (request.search) {
-        query.where("title", "ilike", `%${request.search}%`);
-      }
-      if (!request.orderBy) {
-        if (request.orderBy === "newest") {
-          query.orderBy("created_at", "desc");
-        } else {
-          query.orderBy("created_at", "asc");
-        }
-      } else {
-        query.orderBy("created_at", "desc");
-      }
-    });
-    const countQuery = await query
-      .clone()
-      .clearSelect()
-      .clearOrder()
-      .count("* as total")
-      .first();
-    query.limit(pageSize).offset(offset);
-    const res: Post[] = await executeQuery(query, "SELECT", "POSTS");
+    const { queryResult, totalCount } = await this.applyQueryPagination(
+      query,
+      request
+    );
+    const res: Post[] = await executeQuery(queryResult, "SELECT", "POSTS");
 
     return {
       page: page,
       data: res,
-      totalCount: countQuery ? Number(countQuery.total) : 0,
+      totalCount: totalCount,
     };
   }
 
@@ -83,43 +59,22 @@ export class PostSQLRepositories implements IPostRepository {
     domains: string[]
   ): Promise<QueryResponse<Post[]>> {
     const page = Math.max(1, request.page);
-    const pageSize = Math.max(10, Math.min(100, request.itemPerPage));
-    const offset = (page - 1) * pageSize;
 
-    const query = knexDB("posts")
+    let query = knexDB("posts")
       .select("posts.*", "domains.domain_name as domain")
       .whereRaw(`posts.domain_id in ${domains}`);
+    query = this.applyQueryFilters(query, request);
 
-    query.modify((query) => {
-      if (request.dateEnd && request.dateStart) {
-        query.whereBetween("created_at", [request.dateStart, request.dateEnd]);
-      }
-      if (!request.orderBy) {
-        if (request.orderBy === "newest") {
-          query.orderBy("created_at", "desc");
-        } else {
-          query.orderBy("created_at", "asc");
-        }
-      } else {
-        query.orderBy("created_at", "desc");
-      }
-      if (request.search) {
-        query.where("title", "ilike", `%${request.search}%`);
-      }
-    });
-    const countQuery = await query
-      .clone()
-      .clearSelect()
-      .clearOrder()
-      .count("* as total")
-      .first();
-    query.limit(pageSize).offset(offset);
-    const res: Post[] = await executeQuery(query, "SELECT", "POSTS");
+    const { queryResult, totalCount } = await this.applyQueryPagination(
+      query,
+      request
+    );
+    const res: Post[] = await executeQuery(queryResult, "SELECT", "POSTS");
 
     return {
       page: page,
       data: res,
-      totalCount: countQuery ? Number(countQuery.total) : 0,
+      totalCount: totalCount,
     };
   }
 
