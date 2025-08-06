@@ -12,7 +12,7 @@ export class DomainsSQLRepositories implements IDomainRepository {
       "INSERT",
       "DOMAINS"
     );
-    return result[0].domain_id;
+    return Number(result[0].domain_id);
   }
   async getDomainDetail(domainId: number): Promise<Domain> {
     const query = knexDB("domains")

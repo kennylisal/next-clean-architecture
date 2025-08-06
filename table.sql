@@ -1,6 +1,6 @@
 CREATE TYPE DOMAIN_VISIBILITY_TYPE AS ENUM ('public', 'restricted', 'private');
 CREATE TYPE DOMAIN_MEMBERSHIP_ACCEPTANCE AS ENUM ('open', 'invite-only', 'confirmation');
-CREATE TYPE DOMAIN_MEMBERSHIP_ROLE AS ENUM ('member', 'moderator', 'admin');
+CREATE TYPE DOMAIN_MEMBERSHIP_ROLE AS ENUM ('member', 'moderator', 'admin','creator');
 CREATE TYPE DOMAIN_STATUS AS ENUM ('active', 'banned', 'expired', 'suspended');
 
 DROP TABLE IF EXISTS domains;
