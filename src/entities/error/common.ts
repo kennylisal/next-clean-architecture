@@ -35,3 +35,9 @@ export class DatabaseError extends Error {
     this.operation = operation;
   }
 }
+
+export class NotSignedError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}

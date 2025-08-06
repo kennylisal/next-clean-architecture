@@ -33,7 +33,6 @@ export default function SignUpPage() {
   const [verificationError, setVerificationError] = useState<string | null>(
     null
   );
-
   // Sign-up form
   const {
     register,
@@ -44,7 +43,6 @@ export default function SignUpPage() {
     resolver: zodResolver(createUserSchema),
     defaultValues: {
       email: "",
-      fullName: "",
       password: "",
       role: "student",
     },
@@ -77,13 +75,13 @@ export default function SignUpPage() {
 
       await signUp.update({
         unsafeMetadata: {
-          fullName: data.fullName,
           role: data.role,
+          createdAt: new Date().toISOString(),
         },
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-      setIsVerificationStep(true); // Switch to verification step
+      setIsVerificationStep(false); // Switch to verification step
       setVerificationError(null);
     } catch (error) {
       const message = "Error ketika signup";
@@ -216,15 +214,7 @@ export default function SignUpPage() {
             >
               Welcome, please fill in your details to create an account.
             </Typography>
-            <TextField
-              fullWidth
-              label="Full Name"
-              variant="outlined"
-              margin="normal"
-              {...register("fullName")}
-              error={!!errors.fullName}
-              helperText={errors.fullName?.message}
-            />
+
             <TextField
               fullWidth
               label="Email"
