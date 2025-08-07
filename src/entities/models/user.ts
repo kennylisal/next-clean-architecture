@@ -19,6 +19,12 @@ export interface UserMetaData {
   createdAt: string;
 }
 
+export interface ClerkUserResponse {
+  id: string;
+  email_addresses: { email_address: string }[];
+  unsafe_metadata: UserMetaData;
+}
+
 export const createUserSchema = userSchema
   .pick({
     email: true,

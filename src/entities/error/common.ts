@@ -41,3 +41,9 @@ export class NotSignedError extends Error {
     super(message, options);
   }
 }
+
+export class ClerkError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}

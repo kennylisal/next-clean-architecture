@@ -1,7 +1,8 @@
-import { CreateUser, User } from "@/entities/models/user";
+import { CreateUser, User, UserMetaData } from "@/entities/models/user";
 
 export interface IUsersRepository {
-  getUserData(id: number): Promise<User>;
-  // loginUser(email: string, password: string): Promise<User>;
-  // registerUser(createUser: CreateUser): Promise<boolean>;
+  getUserData(id: string): Promise<User>;
+  updateUserData(userId: string, metaData: UserMetaData): Promise<boolean>;
+  loginUser(email: string, password: string): Promise<User>;
+  registerUser(createUser: CreateUser): Promise<boolean>;
 }
