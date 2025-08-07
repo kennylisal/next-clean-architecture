@@ -8,10 +8,14 @@ import executeQuery from "../utils/query-helper";
 import { QueryResponse } from "@/entities/models/response";
 import { Knex } from "knex";
 export class PostSQLRepositories implements IPostRepository {
-  async getPosts(request: PostsQuery): Promise<QueryResponse<Post[]>> {
+  async getPosts(
+    request: PostsQuery,
+    trx?: Knex.Transaction
+  ): Promise<QueryResponse<Post[]>> {
+    const db = trx || knexDB;
     const page = Math.max(1, request.page);
 
-    let query = knexDB("posts")
+    let query = db("posts")
       .select("post_id", "title", "created_at", "author", "body")
       .where("domain_id", "=", request.domain ?? 1);
     query = this.applyQueryFilters(query, request);
@@ -31,11 +35,13 @@ export class PostSQLRepositories implements IPostRepository {
 
   async getUserPost(
     request: PostsQuery,
-    userId: string
+    userId: string,
+    trx?: Knex.Transaction
   ): Promise<QueryResponse<Post[]>> {
+    const db = trx || knexDB;
     const page = Math.max(1, request.page);
 
-    let query = knexDB("posts")
+    let query = db("posts")
       .select("posts.*", "domains.domain_name as domain")
       .where("posts.author", "=", userId)
       .join("domains", "domains.domain_id", "posts.domain_is");
@@ -56,11 +62,13 @@ export class PostSQLRepositories implements IPostRepository {
 
   async getPostForUser(
     request: PostsQuery,
-    domains: string[]
+    domains: string[],
+    trx?: Knex.Transaction
   ): Promise<QueryResponse<Post[]>> {
+    const db = trx || knexDB;
     const page = Math.max(1, request.page);
 
-    let query = knexDB("posts")
+    let query = db("posts")
       .select("posts.*", "domains.domain_name as domain")
       .whereRaw(`posts.domain_id in ${domains}`);
     query = this.applyQueryFilters(query, request);
@@ -78,8 +86,9 @@ export class PostSQLRepositories implements IPostRepository {
     };
   }
 
-  async getPost(id: number): Promise<Post> {
-    const query = knexDB("posts")
+  async getPost(id: number, trx?: Knex.Transaction): Promise<Post> {
+    const db = trx || knexDB;
+    const query = db("posts")
       .select("posts.*", "domains.domain_name as domain")
       .where("post_id", "=", id)
       .join("domains", "domains.domain_id", "posts.domain_id")
@@ -87,8 +96,12 @@ export class PostSQLRepositories implements IPostRepository {
     return await executeQuery(query, "SELECT", "POSTS");
   }
 
-  async createPost(schema: CreatePost): Promise<number> {
-    const query = knexDB("posts").insert(schema).returning("post_id");
+  async createPost(
+    schema: CreatePost,
+    trx?: Knex.Transaction
+  ): Promise<number> {
+    const db = trx || knexDB;
+    const query = db("posts").insert(schema).returning("post_id");
     const result: { post_id: number }[] = await executeQuery(
       query,
       "INSERT",

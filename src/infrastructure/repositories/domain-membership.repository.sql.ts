@@ -5,15 +5,18 @@ import {
 } from "@/entities/models/domain-membership";
 import knexDB from "../config/knex_db";
 import executeQuery from "../utils/query-helper";
+import { Knex } from "knex";
 
 export class DomainsMembershipSQLRepositories
   implements IDomainMembershipRepository
 {
   async getDomainMemberStatus(
     member_id: string,
-    domain_id: number
+    domain_id: number,
+    trx?: Knex.Transaction
   ): Promise<DomainMembership | undefined> {
-    const query = knexDB("domains_membership")
+    const db = trx || knexDB;
+    const query = db("domains_membership")
       .where({
         member_id: member_id,
         domain_id: domain_id,
@@ -34,9 +37,11 @@ export class DomainsMembershipSQLRepositories
     return Number(result[0].count);
   }
   async createDomainMembership(
-    schema: CreateDomainMembership
+    schema: CreateDomainMembership,
+    trx?: Knex.Transaction
   ): Promise<number> {
-    const query = knexDB("domains_membership")
+    const db = trx || knexDB;
+    const query = db("domains_membership")
       .insert(schema)
       .returning("membership_id");
 

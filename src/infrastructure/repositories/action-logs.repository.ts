@@ -6,10 +6,15 @@ import { CreateActionLogs, ActionLogs } from "@/entities/models/action-logs";
 import knexDB from "../config/knex_db";
 import executeQuery from "../utils/query-helper";
 import { QueryResponse } from "@/entities/models/response";
+import { Knex } from "knex";
 
 export class ActionLogsSQLRepository implements IActionLogsRepository {
-  async createLog(data: CreateActionLogs): Promise<number> {
-    const query = knexDB("action_logs").insert(data).returning("log_id");
+  async createLog(
+    data: CreateActionLogs,
+    trx?: Knex.Transaction
+  ): Promise<number> {
+    const db = trx || knexDB;
+    const query = db("action_logs").insert(data).returning("log_id");
     const result: { log_id: number }[] = await executeQuery(
       query,
       "INSERT",
@@ -17,12 +22,16 @@ export class ActionLogsSQLRepository implements IActionLogsRepository {
     );
     return Number(result[0].log_id);
   }
-  async getLogs(request: LogsQuery): Promise<QueryResponse<ActionLogs[]>> {
+  async getLogs(
+    request: LogsQuery,
+    trx?: Knex.Transaction
+  ): Promise<QueryResponse<ActionLogs[]>> {
+    const db = trx || knexDB;
     const page = Math.max(1, request.page);
     const pageSize = Math.max(10, Math.min(100, request.itemPerPage));
     const offset = (page - 1) * pageSize;
 
-    const query = knexDB("action_logs").select("*");
+    const query = db("action_logs").select("*");
 
     query.modify((query) => {
       if (request.dateEnd && request.dateStart) {
