@@ -15,7 +15,7 @@ export class ActionLogsSQLRepository implements IActionLogsRepository {
       "INSERT",
       "action_logs"
     );
-    return result[0].log_id;
+    return Number(result[0].log_id);
   }
   async getLogs(request: LogsQuery): Promise<QueryResponse<ActionLogs[]>> {
     const page = Math.max(1, request.page);

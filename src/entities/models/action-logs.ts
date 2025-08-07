@@ -13,6 +13,8 @@ export const createActionLogs = z.object({
   table_name: z.string(),
   document_id: z.number(),
   logs_message: z.string(),
+  user_id: z.string(),
+  log_id: z.number().optional(),
 });
 
 export type CreateActionLogs = z.infer<typeof createActionLogs>;
