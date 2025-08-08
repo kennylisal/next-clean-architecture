@@ -8,18 +8,26 @@ import {
   USE_CASE_ACTIONS,
   UseCaseAction,
 } from "@/entities/models/usercase-actions";
+import { IAuthenticationService } from "../services/authentication.service.interface";
 
 export type IGetPostDetailUseCase = ReturnType<typeof getPostDetailUseCase>;
 
 export const getPostDetailUseCase =
-  (postsRepo: IPostRepository, authorizationService: IAuthorizationServices) =>
+  (
+    postsRepo: IPostRepository,
+    authorizationService: IAuthorizationServices,
+    authenticationServices: IAuthenticationService
+  ) =>
   async (postId: number): Promise<Post | undefined> => {
     const requestedAction: UseCaseAction = {
       action: USE_CASE_ACTIONS.READ,
-      resource: RESOURCE.POST,
+      resource: RESOURCE.DOMAIN_MEMBERSHIPS,
     };
+    const userId = await authenticationServices.getStringedUserId();
+
     const isPermitted = await authorizationService.isActionPermitted(
-      requestedAction
+      requestedAction,
+      userId
     );
     if (!isPermitted) {
       throw new ForbiddenActionError(

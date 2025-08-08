@@ -1,7 +1,7 @@
 import { Session } from "@/entities/models/session";
 
 export interface IAuthenticationService {
-  getUserId(): string;
+  getStringedUserId(): Promise<string>;
   validateSession(
     sessionId: Session["id"]
   ): Promise<{ user: UserActivation; session: Session }>;

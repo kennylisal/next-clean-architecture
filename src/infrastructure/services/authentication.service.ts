@@ -2,7 +2,7 @@ import { IAuthenticationService } from "@/application/services/authentication.se
 import { Session } from "@/entities/models/session";
 
 export class AuthenticationService implements IAuthenticationService {
-  getUserId(): string {
+  getStringedUserId(): string {
     throw new Error("Method not implemented.");
   }
   validateSession(
