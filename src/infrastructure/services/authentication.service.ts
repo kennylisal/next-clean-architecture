@@ -1,19 +1,45 @@
-import { IAuthenticationService } from "@/application/services/authentication.service.interface";
-import { Session } from "@/entities/models/session";
+"use server";
+import { auth } from "@/lib/auth";
+import { IAuthenticationService } from "@/src/application/services/authentication.service.interface";
+import { headers } from "next/headers";
 
-export class AuthenticationService implements IAuthenticationService {
-  getStringedUserId(): string {
-    throw new Error("Method not implemented.");
+export class AuthenticationBestAuthService implements IAuthenticationService {
+  async signInEmail(email: string, password: string): Promise<boolean> {
+    try {
+      const res = await auth.api.signInEmail({
+        body: {
+          email: email,
+          password: password,
+        },
+      });
+      console.log(res);
+      return true;
+    } catch (error) {
+      throw error;
+    }
   }
-  validateSession(
-    sessionId: Session["id"]
-  ): Promise<{ user: UserActivation; session: Session }> {
-    throw new Error("Method not implemented.");
+  async signUpEmail(email: string, password: string): Promise<string> {
+    try {
+      const res = await auth.api.signUpEmail({
+        body: {
+          email: email,
+          password: password,
+          name: "kenny",
+        },
+      });
+
+      return res.token || "token signup";
+    } catch (error) {
+      throw error;
+    }
   }
-  validatePasswords(
-    inputPassword: string,
-    usersHashedPassword: string
-  ): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async generateSession(): Promise<boolean> {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    if (!session) {
+      return false;
+    }
+    return true;
   }
 }

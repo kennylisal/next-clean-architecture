@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "seeder.js",
-    "jest.config.js"
+    "jest.config.js",
+    "src/lib/auth.js"
   ],
   "exclude": ["node_modules"]
 }
