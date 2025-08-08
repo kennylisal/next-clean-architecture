@@ -47,3 +47,9 @@ export class ClerkError extends Error {
     super(message, options);
   }
 }
+
+export class ForbiddenActionError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}

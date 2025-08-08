@@ -1,5 +1,5 @@
 import { PostsQuery } from "@/application/repositories/posts.repository.interface";
-import { IGetPostForUserUseCase } from "@/application/use-case/get-posts-for-user-usecase";
+import { IGetPostForUserUseCase } from "@/application/use-case/get-general-post";
 import { Post, PostHeader } from "@/entities/models/post";
 import { QueryResponse } from "@/entities/models/response";
 

@@ -1,7 +1,7 @@
 import { createModule } from "@evyweb/ioctopus";
 import { DI_SYMBOLS } from "../types";
 import { MockPostRepositories } from "@/infrastructure/repositories/post.repository.mock";
-import { getPostsForUserUsecase } from "@/application/use-case/get-posts-for-user-usecase";
+import { getPostsForUserUsecase } from "@/application/use-case/get-general-post";
 import { getPostForUserController } from "@/interface-adapters/controllers/posts/get-posts-for-user-controller";
 import { PostSQLRepositories } from "@/infrastructure/repositories/post.repository.sql";
 

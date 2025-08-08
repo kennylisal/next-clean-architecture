@@ -1,5 +1,5 @@
 import { IPostRepository } from "@/application/repositories/posts.repository.interface";
-import { IGetPostForUserUseCase } from "@/application/use-case/get-posts-for-user-usecase";
+import { IGetPostForUserUseCase } from "@/application/use-case/get-general-post";
 import { IGetPostForUserUserController } from "@/interface-adapters/controllers/posts/get-posts-for-user-controller";
 
 export const DI_SYMBOLS = {
