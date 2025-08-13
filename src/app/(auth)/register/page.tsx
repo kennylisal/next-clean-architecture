@@ -19,6 +19,7 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Zod schema for verification code
 const VerificationSchema = z.object({
@@ -28,6 +29,8 @@ const VerificationSchema = z.object({
 type VerificationFormData = z.infer<typeof VerificationSchema>;
 
 export default function SignUpPage() {
+  const router = useRouter();
+
   const { isLoaded, signUp, setActive } = useSignUp();
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [verificationError, setVerificationError] = useState<string | null>(
@@ -42,8 +45,8 @@ export default function SignUpPage() {
   } = useForm<CreateUser>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      user_email: "",
+      user_password: "",
       role: "student",
     },
   });
@@ -69,8 +72,8 @@ export default function SignUpPage() {
 
     try {
       await signUp.create({
-        emailAddress: data.email,
-        password: data.password,
+        emailAddress: data.user_email,
+        password: data.user_password,
       });
 
       await signUp.update({
@@ -104,7 +107,8 @@ export default function SignUpPage() {
       if (result.status === "complete") {
         // Set the session as active to log the user in
         await setActive({ session: result.createdSessionId });
-        alert("Email verified successfully! You are now signed in.");
+        router.push("/login");
+        // alert("Email verified successfully! You are now signed in.");
         // Optionally redirect to a dashboard
         // window.location.href = '/dashboard';
       } else {
@@ -221,9 +225,9 @@ export default function SignUpPage() {
               type="email"
               variant="outlined"
               margin="normal"
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
+              {...register("user_email")}
+              error={!!errors.user_email}
+              helperText={errors.user_email?.message}
             />
             <TextField
               fullWidth
@@ -231,9 +235,9 @@ export default function SignUpPage() {
               type="password"
               variant="outlined"
               margin="normal"
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
+              {...register("user_password")}
+              error={!!errors.user_password}
+              helperText={errors.user_password?.message}
             />
             <FormControl
               fullWidth

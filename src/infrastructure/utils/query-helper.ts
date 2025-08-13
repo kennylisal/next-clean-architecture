@@ -1,4 +1,4 @@
-import { DatabaseError } from "@/src/entities/error/common";
+import { DatabaseError } from "@/entities/error/common";
 import { Knex } from "knex";
 
 export default async function executeQuery<T>(

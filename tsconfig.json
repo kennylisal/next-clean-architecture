@@ -19,8 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": ["./src/*"]
+    },
+    "types": ["jest", "node", "@clerk/nextjs"]
   },
   "include": [
     "next-env.d.ts",
@@ -28,7 +29,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "seeder.js",
-    "jest.config.js",
     "src/lib/auth.js"
   ],
   "exclude": ["node_modules"]

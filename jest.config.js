@@ -3,6 +3,6 @@ module.exports = {
   testEnvironment: "node",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/$1", // Maps @/ to src/
+    "^@/(.*)$": "<rootDir>/src/$1", // Maps @/ to src/
   },
 };

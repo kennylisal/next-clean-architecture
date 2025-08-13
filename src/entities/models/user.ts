@@ -2,7 +2,7 @@ import z from "zod";
 
 export const userSchema = z.object({
   id: z.number(),
-  email: z.email(),
+  user_email: z.email(),
   role: z.enum(["student", "admin"]),
 });
 
@@ -27,15 +27,15 @@ export interface ClerkUserResponse {
 
 export const createUserSchema = userSchema
   .pick({
-    email: true,
+    user_email: true,
     role: true,
   })
-  .merge(z.object({ password: z.string().min(6).max(255) }));
+  .merge(z.object({ user_password: z.string().min(6).max(255) }));
 
 export type CreateUser = z.infer<typeof createUserSchema>;
 
 export const loginUserSchema = userSchema
-  .pick({ email: true })
-  .merge(z.object({ password: z.string().min(6).max(255) }));
+  .pick({ user_email: true })
+  .merge(z.object({ user_password: z.string().min(6).max(255) }));
 
 export type LoginUser = z.infer<typeof loginUserSchema>;

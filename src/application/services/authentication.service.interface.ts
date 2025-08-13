@@ -1,14 +1,18 @@
-import { Session } from "@/src/entities/models/session";
-import { User } from "@/src/entities/models/user";
+import { User, UserMetaData } from "@/entities/models/user";
 
 export interface IAuthenticationService {
   signInEmail(email: string, password: string): Promise<boolean>;
-  signUpEmail(email: string, password: string): Promise<string>;
-  generateSession(): Promise<boolean>;
+  signUpEmail(
+    email: string,
+    password: string,
+    metaData: UserMetaData
+  ): Promise<string>;
+  deleteUser(idUser: string): Promise<boolean>;
+  getUserData(args: string): Promise<User>;
   // getStringedUserId(): Promise<string>;
   // validateSession(
   //   sessionId: Session["id"]
-  // ): Promise<{ user: UserActivation; session: Session }>;
+  // ): Promise<{ user: UserActivation; session: Session }>;c
   // validatePasswords(
   //   inputPassword: string,
   //   usersHashedPassword: string

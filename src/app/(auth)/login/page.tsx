@@ -25,8 +25,8 @@ export default function LoginPage() {
   } = useForm<LoginUser>({
     resolver: zodResolver(loginUserSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      user_email: "",
+      user_password: "",
     },
   });
 
@@ -38,15 +38,13 @@ export default function LoginPage() {
 
     try {
       const result = await signIn.create({
-        identifier: data.email,
-        password: data.password,
+        identifier: data.user_email,
+        password: data.user_password,
       });
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
         alert("Sign-in successful! You are now logged in.");
-        // Optionally redirect to a dashboard
-        // window.location.href = '/dashboard';
       } else {
         setError("root", { message: "Sign-in failed. Please try again." });
       }
@@ -100,9 +98,9 @@ export default function LoginPage() {
             type="email"
             variant="outlined"
             margin="normal"
-            {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            {...register("user_email")}
+            error={!!errors.user_email}
+            helperText={errors.user_email?.message}
           />
           <TextField
             fullWidth
@@ -110,9 +108,9 @@ export default function LoginPage() {
             type="password"
             variant="outlined"
             margin="normal"
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password?.message}
+            {...register("user_password")}
+            error={!!errors.user_password}
+            helperText={errors.user_password?.message}
           />
 
           {/* Root-level Error */}
