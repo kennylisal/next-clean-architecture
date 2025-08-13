@@ -1,7 +1,7 @@
 "use client";
-
 import { SignUpError } from "@/entities/error/common";
 import { LoginUser, loginUserSchema } from "@/entities/models/user";
+import { url_route } from "@/route";
 import { useSignIn } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -12,10 +12,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
+import { loginSuccess } from "./action";
 
 export default function LoginPage() {
+  const router = useRouter();
   const { isLoaded, signIn, setActive } = useSignIn();
   const {
     register,
@@ -44,12 +47,14 @@ export default function LoginPage() {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        alert("Sign-in successful! You are now logged in.");
+        // window.location.href = url_route.posts;
+        await loginSuccess();
       } else {
         setError("root", { message: "Sign-in failed. Please try again." });
       }
     } catch (error) {
-      const message = "Error ketika sign-in";
+      const message =
+        error instanceof Error ? error.message : "Error ketika sign-in";
       throw new SignUpError(message);
     }
   };
@@ -126,6 +131,7 @@ export default function LoginPage() {
             color="primary"
             size="large"
             type="submit"
+            name="tombol"
             disabled={isSubmitting}
             sx={{ mt: 2 }}
           >

@@ -12,5 +12,6 @@ export default defineConfig({
     { name: "chromium", use: { browserName: "chromium" } },
     // Add more browsers if needed
   ],
+
   globalSetup: "./test/e2e/global-setup.ts",
 });

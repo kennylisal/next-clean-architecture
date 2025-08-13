@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher(["/", "/login", "/register"]);
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
   if (!isPublicRoute(req) && !userId) {
+    console.log("Redirecting karena terlarang");
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl, 307);
   }
