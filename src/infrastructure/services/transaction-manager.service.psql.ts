@@ -7,7 +7,9 @@ import { DatabaseError } from "@/entities/error/common";
 
 const db = knexDB;
 
-export class TransactionManagerService implements ItransactionManagerService {
+export class PSQLTransactionManagerService
+  implements ItransactionManagerService
+{
   public async startTransaction<T>(
     clb: (tx: PSQLTransaction) => Promise<T>,
     parent?: PSQLTransaction
@@ -45,8 +47,8 @@ export class PSQLTransaction implements ITransaction {
   }
 }
 
-const tsm = new TransactionManagerService();
-tsm.startTransaction(async (t) => {
-  const repo = new PostSQLRepositories();
-  await repo.getPost(0);
-});
+// const tsm = new TransactionManagerService();
+// tsm.startTransaction(async (t) => {
+//   const repo = new PostSQLRepositories();
+//   await repo.getPost(0);
+// });

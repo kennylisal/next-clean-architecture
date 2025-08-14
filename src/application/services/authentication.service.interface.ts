@@ -1,3 +1,4 @@
+import { Session } from "@/entities/models/session";
 import { User, UserMetaData } from "@/entities/models/user";
 
 export interface IAuthenticationService {
@@ -9,6 +10,10 @@ export interface IAuthenticationService {
   ): Promise<string>;
   deleteUser(idUser: string): Promise<boolean>;
   getUserData(args: string): Promise<User>;
+  verifySession(
+    sessionId: string | undefined,
+    sessionToken: string | undefined
+  ): Promise<Session>;
   // getStringedUserId(): Promise<string>;
   // validateSession(
   //   sessionId: Session["id"]
