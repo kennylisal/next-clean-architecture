@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import JobsList from "@/components/pages/jobs/jobs-list/JobsListPage";
-import { getPostsDashboard } from "./action";
 import {
   Button,
   Card,
