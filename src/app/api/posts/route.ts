@@ -1,20 +1,23 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
+import { getInjection } from "../../../../DI/container";
 import { PostsQuery } from "@/application/repositories/posts.repository.interface";
-import { PostSQLRepositories } from "@/infrastructure/repositories/post.repository.sql";
+import { generalDomain } from "@/utils/const";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const query: PostsQuery = {
+  const rawQuery: PostsQuery = {
     page: parseInt(searchParams.get("page") ?? "1"),
     itemPerPage: parseInt(searchParams.get("itemPerPage") ?? "10"),
-    domain: parseInt(searchParams.get("domain") ?? "2020"),
-    // Add other filters from searchParams if needed
+    dateEnd: searchParams.get("dateEnd") ?? undefined,
+    dateStart: searchParams.get("dateStart") ?? undefined,
+    search: searchParams.get("searchQuery") ?? undefined,
+    domain: generalDomain,
   };
-  const res = await new PostSQLRepositories().getPosts({
-    domain: 2020,
-    page: 1,
-    itemPerPage: 10,
-  });
+
+  // Filter out undefined and reconstruct (cast to PostsQuery as required fields are defined)
+
+  const getPostsController = getInjection("IGetGeneralPostController");
+  const res = await getPostsController(rawQuery);
   return NextResponse.json(res);
 }
