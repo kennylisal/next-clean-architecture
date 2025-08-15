@@ -1,4 +1,4 @@
-import { base_url, url_route } from "@/route";
+import { base_url, url_route } from "@/utils/route";
 import { setupClerkTestingToken } from "@clerk/testing/playwright";
 import { expect, test } from "@playwright/test";
 

@@ -9,13 +9,21 @@ import {
   TextField,
   type SelectChangeEvent,
 } from "@mui/material";
-import { useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { SearchOutlined } from "@mui/icons-material";
 
-export const JobsSearch = () => {
+export const JobsSearch = ({
+  handleSearch,
+}: {
+  handleSearch: (
+    dateStart: string | undefined,
+    dateEnd: string | undefined,
+    search: string | undefined
+  ) => void;
+}) => {
   const [salary, setSalary] = useState<string>("20");
   const [location, setLocation] = useState<string>("");
-
+  const [search, setSearch] = useState<string>("");
   const handleSalaryChange = useCallback((event: SelectChangeEvent<string>) => {
     setSalary(event.target.value as string);
   }, []);
@@ -27,6 +35,15 @@ export const JobsSearch = () => {
     []
   );
 
+  const onClick = () => {
+    console.log(search);
+    handleSearch(undefined, undefined, search);
+  };
+
+  const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
       <TextField
@@ -35,23 +52,8 @@ export const JobsSearch = () => {
         variant="outlined"
         size={"medium"}
         fullWidth
+        onChange={onSearchChange}
       />
-      <FormControl fullWidth>
-        <InputLabel id="salary-select-label">Salary</InputLabel>
-        <Select
-          labelId="salary-select-label"
-          id="salary-select"
-          value={salary}
-          label="Salary"
-          onChange={handleSalaryChange}
-          variant={"outlined"}
-        >
-          <MenuItem value={"10"}>$10.000</MenuItem>
-          <MenuItem value={"20"}>$20.000</MenuItem>
-          <MenuItem value={"50"}>$50.000</MenuItem>
-          <MenuItem value={"100"}>$100.000</MenuItem>
-        </Select>
-      </FormControl>
 
       <FormControl fullWidth>
         <InputLabel id="location-select-label">Location</InputLabel>
@@ -70,7 +72,7 @@ export const JobsSearch = () => {
         </Select>
       </FormControl>
 
-      <IconButton size={"large"} color={"primary"}>
+      <IconButton size={"large"} color={"primary"} onClick={onClick}>
         <SearchOutlined />
       </IconButton>
     </Stack>

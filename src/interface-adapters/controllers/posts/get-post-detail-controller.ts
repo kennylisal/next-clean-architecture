@@ -25,10 +25,10 @@ export const getPostDetailController =
     sessionToken: string | undefined,
     postId: number
   ): Promise<ReturnType<typeof presenter>> => {
-    const session = await authenticationServices.verifySession(
-      sessionId,
-      sessionToken
-    );
+    // const session = await authenticationServices.verifySession(
+    //   sessionId,
+    //   sessionToken
+    // );
 
     //nanti cek kelengkapan
     const post = await getPostDetailUserCase(postId);

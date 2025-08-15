@@ -44,7 +44,7 @@ export class MockPostRepositories implements IPostRepository {
   async getUserPost(query: PostsQuery): Promise<QueryResponse<Post[]>> {
     return {
       page: 1,
-      totalCount: 10,
+      totalItem: 10,
       data: [
         {
           body: "He was an expert but not in a discipline that anyone could fully appreciate. He knew how to hold the cone just right so that the soft server ice-cream fell into it at the precise angle to form a perfect cone each and every time. It had taken years to perfect and he could now do it without even putting any thought behind it.",
@@ -73,7 +73,7 @@ export class MockPostRepositories implements IPostRepository {
     return {
       data: this._posts,
       page: 1,
-      totalCount: this._posts.length,
+      totalItem: this._posts.length,
     };
   }
 }

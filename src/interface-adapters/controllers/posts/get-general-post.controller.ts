@@ -1,8 +1,9 @@
 import { PostsQuery } from "@/application/repositories/posts.repository.interface";
 import { IGetGeneralPostUseCase } from "@/application/use-case/get-general-post";
-import { Post, PostHeader } from "@/entities/models/post";
+import { Post } from "@/entities/models/post";
 import { PaginationQuery } from "@/entities/models/query";
 import { QueryResponse } from "@/entities/models/response";
+import { generalDomain } from "@/utils/const";
 
 function presenter(response: QueryResponse<Post[]>) {
   const data = response.data.map((p) => ({
@@ -14,7 +15,7 @@ function presenter(response: QueryResponse<Post[]>) {
   }));
   return {
     page: response.page,
-    totalItem: response.totalCount,
+    totalItem: response.totalItem,
     data: data,
   };
 }
@@ -25,11 +26,11 @@ export type IGetGeneralPostController = ReturnType<
 
 export const getGeneralPostController =
   (getGeneralPost: IGetGeneralPostUseCase) =>
-  async (query: PaginationQuery): Promise<ReturnType<typeof presenter>> => {
-    const posts = await getGeneralPost({
-      page: query.page,
-      itemPerPage: query.page,
-      domain: -1,
-    });
+  async (query: PostsQuery): Promise<ReturnType<typeof presenter>> => {
+    const postQuery: PostsQuery = Object.fromEntries(
+      Object.entries(query).filter(([_, value]) => value !== undefined)
+    ) as unknown as PostsQuery;
+    const posts = await getGeneralPost(postQuery);
+
     return presenter(posts);
   };

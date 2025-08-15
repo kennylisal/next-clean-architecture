@@ -1,7 +1,6 @@
 import { createContainer } from "@evyweb/ioctopus";
 import { createPostsModule } from "./modules/posts.module";
 import { DI_RETURN_TYPES, DI_SYMBOLS } from "./types";
-import { symbol } from "zod";
 import { createAuthenticationModule } from "./modules/authentication.module";
 import { createTransactionManagerModule } from "./modules/transaction-manager.module";
 

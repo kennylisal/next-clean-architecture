@@ -66,7 +66,7 @@ export class ActionLogsSQLRepository implements IActionLogsRepository {
     return {
       page: page,
       data: res,
-      totalCount: countQuery ? Number(countQuery.total) : 0,
+      totalItem: countQuery ? Number(countQuery.total) : 0,
     };
   }
 }

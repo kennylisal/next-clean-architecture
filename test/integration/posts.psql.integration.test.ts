@@ -107,6 +107,7 @@ describe("PostSQLRepositories Integration Tests", () => {
   });
 });
 
+domainArr = [{ domain_id: 2020 }, { domain_id: 2021 }];
 describe("getPosts should retrieve based on needs", () => {
   //actual-test
   it("should retrieve paginated posts", async () => {
@@ -146,7 +147,7 @@ describe("getPosts should retrieve based on needs", () => {
     const page1Result = await repository.getPosts(page1request);
 
     //assert
-    expect(page1Result.totalCount).toStrictEqual(4);
+    expect(page1Result.totalItem).toStrictEqual(4);
   });
 
   it("should retrieve posts with dates range", async () => {

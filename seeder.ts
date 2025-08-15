@@ -1,24 +1,11 @@
-// seeds/seeder.js
-const { faker } = require("@faker-js/faker");
-
-const knex = require("knex");
-
-require("dotenv").config({ path: "./.env.example" });
-
-const knexDB = knex({
-  client: "pg",
-  connection: {
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
-  },
-});
+import { CreateDomain } from "@/entities/models/domain";
+import knexDB from "@/infrastructure/config/knex_db";
+import { faker } from "@faker-js/faker";
 
 const iteration = parseInt(process.argv[2]) || 22;
 
-async function seeder(knex) {
-  const domains = [
+async function seeder() {
+  const domains: CreateDomain[] = [
     {
       description: "deskripsi domain 1",
       domain_name: "general",
@@ -36,14 +23,14 @@ async function seeder(knex) {
       membership_acceptance: "confirmation",
     },
   ];
-  const domainArr = await knexDB("domains")
+  const domainArr: { domain_id: number }[] = await knexDB("domains")
     .insert(domains)
     .returning("domain_id");
-  const postsData = Array.from({ length: iteration }, () => ({
+  const postsData = Array.from({ length: 20 }).map((_) => ({
     body: faker.lorem.paragraphs({ min: 2, max: 4 }),
     title: faker.lorem.words({ min: 4, max: 10 }),
     author: faker.string.alphanumeric(10),
-    domain_id: "2020",
+    domain_id: domainArr[0].domain_id,
   }));
   const dataForTesting = [
     {
@@ -75,14 +62,12 @@ async function seeder(knex) {
       domain_id: domainArr[1].domain_id,
     },
   ];
-
   await knexDB("posts").insert([...postsData, ...dataForTesting]);
-  // console.log(query.toSQL().sql);
   console.log(`Inserted ${iteration} posts successfully.`);
   process.exit(0);
 }
 
-seeder(knexDB).catch((err) => {
+seeder().catch((err) => {
   console.error("Error seeding database:", err);
   process.exit(1);
 });

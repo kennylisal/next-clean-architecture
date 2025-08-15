@@ -29,7 +29,7 @@ export class PostSQLRepositories implements IPostRepository {
     return {
       page: page,
       data: res,
-      totalCount: totalCount,
+      totalItem: totalCount,
     };
   }
 
@@ -56,7 +56,7 @@ export class PostSQLRepositories implements IPostRepository {
     return {
       page: page,
       data: res,
-      totalCount: totalCount,
+      totalItem: totalCount,
     };
   }
 
@@ -82,7 +82,7 @@ export class PostSQLRepositories implements IPostRepository {
     return {
       page: page,
       data: res,
-      totalCount: totalCount,
+      totalItem: totalCount,
     };
   }
 
