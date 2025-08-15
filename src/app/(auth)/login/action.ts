@@ -1,5 +1,5 @@
 "use server";
-import { url_route } from "@/route";
+import { url_route } from "@/utils/route";
 import { redirect } from "next/navigation";
 
 export const loginSuccess = async () => {

@@ -9,11 +9,12 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 
-export function GeneralPosts({ posts }: { posts: PostHeader[] }) {
+export function GeneralPosts({ posts }: { posts: PostHeader[] | undefined }) {
+  if (!posts) {
+    return <h1>Tidak ada data</h1>;
+  }
   const displayedData = posts;
-
   const CardWrapper = styled(Card)(({ theme }) => ({
     marginBottom: 10,
     cursor: "pointer",
@@ -36,13 +37,6 @@ export function GeneralPosts({ posts }: { posts: PostHeader[] }) {
       />
     ));
   };
-
-  // const handlePagination = (
-  //   event: React.ChangeEvent<unknown>,
-  //   value: number
-  // ) => {
-  //   setPage(value);
-  // };
 
   if (posts.length === 0) {
     return <h2>Belum ada Data</h2>;

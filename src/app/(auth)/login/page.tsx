@@ -1,7 +1,7 @@
 "use client";
 import { SignUpError } from "@/entities/error/common";
 import { LoginUser, loginUserSchema } from "@/entities/models/user";
-import { url_route } from "@/route";
+import { url_route } from "@/utils/route";
 import { useSignIn } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
