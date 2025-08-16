@@ -31,7 +31,7 @@ export class ClerkAuthenticationService implements IAuthenticationService {
       role: (user.unsafeMetadata as unknown as UserMetaData).role,
     };
   }
-  signInEmail(email: string, password: string): Promise<boolean> {
+  async signInEmail(email: string, password: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
   async signUpEmail(
@@ -49,7 +49,7 @@ export class ClerkAuthenticationService implements IAuthenticationService {
     return user.id;
   }
 
-  deleteUser(idUser: string): Promise<boolean> {
+  async deleteUser(idUser: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
 }

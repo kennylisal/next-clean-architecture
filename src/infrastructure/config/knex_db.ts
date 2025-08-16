@@ -1,3 +1,4 @@
+"use server";
 import knex from "knex";
 import { config } from "dotenv";
 config({ path: ".env" });

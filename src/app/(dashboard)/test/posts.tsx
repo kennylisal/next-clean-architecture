@@ -9,12 +9,15 @@ import {
   styled,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export function GeneralPosts({ posts }: { posts: PostHeader[] | undefined }) {
+  const router = useRouter();
   if (!posts) {
     return <h1>Tidak ada data</h1>;
   }
   const displayedData = posts;
+
   const CardWrapper = styled(Card)(({ theme }) => ({
     marginBottom: 10,
     cursor: "pointer",
@@ -45,7 +48,12 @@ export function GeneralPosts({ posts }: { posts: PostHeader[] | undefined }) {
       <>
         <List sx={{ marginTop: 2 }}>
           {displayedData.map((data) => (
-            <CardWrapper key={`${data.title}-${data.author}`}>
+            <CardWrapper
+              key={`${data.title}-${data.author}`}
+              onClick={() => {
+                router.push(`/test/${data.post_id}`);
+              }}
+            >
               <CardContent>
                 <Stack direction={"row"} justifyContent={"space-between"}>
                   <Stack>
