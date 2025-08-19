@@ -2,7 +2,7 @@ import { Post } from "@/entities/models/post";
 import {
   IPostRepository,
   PostsQuery,
-} from "../repositories/posts.repository.interface";
+} from "../../repositories/posts.repository.interface";
 import { QueryResponse } from "@/entities/models/response";
 
 export type IGetGeneralPostUseCase = ReturnType<typeof getGeneralPost>;

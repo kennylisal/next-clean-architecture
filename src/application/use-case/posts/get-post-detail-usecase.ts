@@ -1,8 +1,8 @@
 import { Post } from "@/entities/models/post";
-import { IPostRepository } from "../repositories/posts.repository.interface";
-import { IAuthorizationServices } from "../services/authorization.service.interface";
+import { IPostRepository } from "../../repositories/posts.repository.interface";
+import { IAuthorizationServices } from "../../services/authorization.service.interface";
 
-import { IAuthenticationService } from "../services/authentication.service.interface";
+import { IAuthenticationService } from "../../services/authentication.service.interface";
 
 export type IGetPostDetailUseCase = ReturnType<typeof getPostDetailUseCase>;
 

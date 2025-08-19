@@ -26,9 +26,9 @@ export const NavigationItemSimple = ({
   nested = false,
   animateOn,
 }: Props) => {
-  const location = window.location.pathname;
+  // const location = window.location.pathname;
   // const navigate = useNavigate();
-  const isActive = location === item.path;
+  // const isActive = location === item.path;
   // const handleClick = useCallback(() => {
   //   navigate(item.path);
   // }, [item.path, navigate]);
@@ -44,7 +44,7 @@ export const NavigationItemSimple = ({
     <NavigationListItemButton
       nested={nested}
       // onClick={handleClick}
-      active={isActive}
+      active={true}
       disabled={item.disabled}
     >
       {!nested && "icon" in item ? (

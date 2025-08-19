@@ -1,31 +1,29 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/login",
-  "/register",
-  "/test(.*)",
-  "/api(.*)",
-  "/detail",
-  "/create",
-  "/mylist",
-]);
+const isPublicRoute = (path: string) =>
+  path === "/login" || path === "/register" || path === "/";
 
-export default clerkMiddleware(async (auth, req) => {
-  const { userId } = await auth();
-  if (!isPublicRoute(req) && !userId) {
-    console.log("Redirecting karena terlarang");
-    const loginUrl = new URL("/login", req.url);
-    return NextResponse.redirect(loginUrl, 307);
+export async function middleware(request: NextRequest) {
+  const sessionCookie = getSessionCookie(request);
+
+  if (!sessionCookie && !isPublicRoute(request.nextUrl.pathname)) {
+    console.log("Redirected by middleware " + request.url);
+    return NextResponse.redirect(new URL("/login", request.url));
   }
-});
+  console.log(sessionCookie);
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };
