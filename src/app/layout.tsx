@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { SidebarLayout } from "@/components/sidebar-layout/SidebarLayout";
 import React from "react";
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,14 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <ClerkProvider>
-          <SignedIn>
-            <SidebarLayout>{children}</SidebarLayout>
-          </SignedIn>
-          <SignedOut>{children}</SignedOut>
-        </ClerkProvider>
+        <SidebarLayout>{children}</SidebarLayout>
       </body>
     </html>
   );

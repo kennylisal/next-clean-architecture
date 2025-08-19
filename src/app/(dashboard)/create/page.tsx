@@ -19,6 +19,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { getInjection } from "../../../../DI/container";
 
 export default function CreatePage() {
   const categories = [

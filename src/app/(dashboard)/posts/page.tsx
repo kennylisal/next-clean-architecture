@@ -1,25 +1,11 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use server";
+import React from "react";
 import JobsList from "@/components/pages/jobs/jobs-list/JobsListPage";
-import {
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  List,
-  Pagination,
-  Stack,
-  styled,
-  Typography,
-} from "@mui/material";
-import { PostHeader } from "@/entities/models/post";
-import { PageHeader } from "@/components/page-header/PageHeader";
-import { JobsSearch } from "@/components/widget/jobs/jobs-search/JobsSearch";
-import { PostAdd } from "@mui/icons-material";
-import { LoadingSpinner } from "@/components/loading/loadingSpinner";
+import { Container } from "@mui/material";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-export default function Home() {
+export default async function Home() {
   // const itemPerPage = 10;
   // const [page, setPage] = useState(1);
   // const [displayedData, setDisplayedData] = useState<PostHeader[]>([]);
@@ -119,7 +105,10 @@ export default function Home() {
   //     );
   //   }
   // }
-
+  // const session = await auth.api.getSession({
+  //   headers: await headers(),
+  // });
+  // console.log(session);
   return (
     <Container maxWidth={"lg"}>
       <h1>Posts</h1>
