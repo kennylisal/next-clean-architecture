@@ -7,7 +7,8 @@ export default async function executeQuery<T>(
   table: string
 ): Promise<T> {
   try {
-    // const sql = query.toSQL().sql;
+    const sql = query.toSQL().sql;
+    console.log(sql);
     return await query;
   } catch (error) {
     const message =

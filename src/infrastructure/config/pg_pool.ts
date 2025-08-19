@@ -2,7 +2,7 @@ import { Pool } from "pg";
 import { config } from "dotenv";
 config({ path: ".env" });
 
-export const pool = new Pool({
+export const pg_pool = new Pool({
   host: process.env.DATABASE_HOST || "127.0.0.1",
   port: Number(process.env.DATABASE_PORT) || 5432,
   user: process.env.DATABASE_USER || "your_database_user",
@@ -14,7 +14,7 @@ export const pool = new Pool({
 
 export async function testConnection(): Promise<boolean> {
   try {
-    const client = await pool.connect();
+    const client = await pg_pool.connect();
     console.log("Connected to database successfully");
     const res = await client.query("SELECT NOW()");
     console.log("Current time:", res.rows[0]);

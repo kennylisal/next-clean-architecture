@@ -1,5 +1,5 @@
 import { IAuthenticationService } from "@/application/services/authentication.service.interface";
-import { IGetPostDetailUseCase } from "@/application/use-case/get-post-detail-usecase";
+import { IGetPostDetailUseCase } from "@/application/use-case/posts/get-post-detail-usecase";
 import { DataNotFoundError } from "@/entities/error/common";
 import { Post } from "@/entities/models/post";
 

@@ -1,15 +1,13 @@
 import { PostsQuery } from "@/application/repositories/posts.repository.interface";
-import { IGetGeneralPostUseCase } from "@/application/use-case/get-general-post";
+import { IGetGeneralPostUseCase } from "@/application/use-case/posts/get-general-post";
 import { Post } from "@/entities/models/post";
-import { PaginationQuery } from "@/entities/models/query";
 import { QueryResponse } from "@/entities/models/response";
-import { generalDomain } from "@/utils/const";
 
 function presenter(response: QueryResponse<Post[]>) {
   const data = response.data.map((p) => ({
     author: "Manager",
     created_at: p.created_at,
-    domain: [] as string[],
+    domain: "",
     post_id: p.post_id,
     title: p.title,
   }));
@@ -30,7 +28,7 @@ export const getGeneralPostController =
     const postQuery: PostsQuery = Object.fromEntries(
       Object.entries(query).filter(([_, value]) => value !== undefined)
     ) as unknown as PostsQuery;
-    const posts = await getGeneralPost(postQuery);
 
+    const posts = await getGeneralPost(postQuery);
     return presenter(posts);
   };
