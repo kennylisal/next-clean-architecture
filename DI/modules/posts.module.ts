@@ -5,7 +5,7 @@ import { PostSQLRepositories } from "@/infrastructure/repositories/post.reposito
 import { getGeneralPostController } from "@/interface-adapters/controllers/posts/get-general-post.controller";
 import { getPostDetailController } from "@/interface-adapters/controllers/posts/get-post-detail-controller";
 import { getPostDetailUseCase } from "@/application/use-case/posts/get-post-detail-usecase";
-import { getGeneralPost } from "@/application/use-case/posts/get-general-post";
+import { getGeneralPost } from "@/application/use-case/posts/get-general-post.usecase";
 
 export function createPostsModule() {
   const postsModule = createModule();

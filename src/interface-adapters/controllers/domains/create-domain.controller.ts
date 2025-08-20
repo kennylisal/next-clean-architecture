@@ -1,7 +1,7 @@
 import { IAuthenticationService } from "@/application/services/authentication.service.interface";
 import { ICreateDomainUseCase } from "@/application/use-case/domain/create-domain.usecase";
-import { AuthenticationError } from "@/entities/error/common";
-import { CreateDomain } from "@/entities/models/domain";
+import { AuthenticationError, InputParseError } from "@/entities/error/common";
+import { CreateDomain, createDomainSchema } from "@/entities/models/domain";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
 function presenter(domainData: CreateDomain, newDomainId: number) {
@@ -19,6 +19,10 @@ export const createDomainController =
     authenticationService: IAuthenticationService
   ) =>
   async (domainData: CreateDomain, headers: ReadonlyHeaders) => {
+    const { error: inputParseError } = createDomainSchema.safeParse(domainData);
+    if (inputParseError) {
+      throw new InputParseError("Invalid data", { cause: inputParseError });
+    }
     const session = await authenticationService.getSessionWithHeaders(headers);
     if (!session) {
       throw new AuthenticationError("Session is not valid");

@@ -18,6 +18,9 @@ export const createPostSchema = z.object({
 
 export type CreatePost = z.infer<typeof createPostSchema>;
 
+export const inputPostSchema = createPostSchema.omit({ author: true });
+export type InputPost = z.infer<typeof inputPostSchema>;
+
 export interface PostHeader {
   post_id: number;
   title: string;
