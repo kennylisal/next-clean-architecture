@@ -1,4 +1,9 @@
-import { CreateUser, User, UserMetaData } from "@/entities/models/user";
+import {
+  ACCOUNT_ROLE,
+  CreateUser,
+  User,
+  UserMetaData,
+} from "@/entities/models/user";
 import { Knex } from "knex";
 
 export interface IUsersRepository {
@@ -10,4 +15,5 @@ export interface IUsersRepository {
     userId: string,
     trx?: Knex.Transaction
   ): Promise<boolean>;
+  getUserRole(id: string): Promise<ACCOUNT_ROLE>;
 }

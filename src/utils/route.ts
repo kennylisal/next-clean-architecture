@@ -6,4 +6,5 @@ export const base_url = process.env.BASE_URL || "http://localhost:3000";
 export const url_route = {
   login: "/login",
   posts: "/posts",
+  register: "/register",
 };

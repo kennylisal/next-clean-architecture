@@ -10,7 +10,7 @@ export const userSchema = z.object({
 export interface User {
   id: string;
   email: string;
-  role: string;
+  role: ACCOUNT_ROLE;
   Domains: string[];
 }
 
@@ -39,3 +39,8 @@ export const loginUserSchema = userSchema
   .merge(z.object({ user_password: z.string().min(6).max(255) }));
 
 export type LoginUser = z.infer<typeof loginUserSchema>;
+
+export enum ACCOUNT_ROLE {
+  STUDENT = "student",
+  TEACHER = "teacher",
+}

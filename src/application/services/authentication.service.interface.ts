@@ -11,12 +11,7 @@ export interface IAuthenticationService {
   ): Promise<string>;
   deleteUser(idUser: string): Promise<boolean>;
   getUserData(args: string): Promise<User>;
-  verifySession(
-    sessionId: string | undefined,
-    sessionToken: string | undefined
-  ): Promise<boolean>;
-  getSessionWithHeaders(
-    headers: () => Promise<ReadonlyHeaders>
-  ): Promise<Session>;
+  verifySession(headers: ReadonlyHeaders): Promise<boolean>;
+  getSessionWithHeaders(headers: ReadonlyHeaders): Promise<Session>;
   signOutUserClient(headers: ReadonlyHeaders): Promise<boolean>;
 }

@@ -114,6 +114,7 @@ export default function SignUpPage() {
             color="primary"
             size="large"
             type="submit"
+            name="tombol"
             disabled={isSubmitting}
             sx={{ mt: 2 }}
           >

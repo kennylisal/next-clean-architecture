@@ -21,3 +21,10 @@ export const createDomainMembershipSchema = z.object({
 export type CreateDomainMembership = z.infer<
   typeof createDomainMembershipSchema
 >;
+
+export enum DOMAIN_MEMBERSHIP_ROLE {
+  MEMBER = "member",
+  MODERATOR = "moderator",
+  ADMIN = "admin",
+  CREATOR = "creator",
+}

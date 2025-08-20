@@ -13,5 +13,5 @@ export default defineConfig({
     // Add more browsers if needed
   ],
 
-  globalSetup: "./test/e2e/global-setup.ts",
+  // globalSetup: "./test/e2e/global-setup.ts",
 });

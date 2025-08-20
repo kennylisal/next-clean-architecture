@@ -26,12 +26,10 @@ export class BetterAuthAuthenticationServices
       throw error;
     }
   }
-  async getSessionWithHeaders(
-    headers: () => Promise<ReadonlyHeaders>
-  ): Promise<Session> {
+  async getSessionWithHeaders(headers: ReadonlyHeaders): Promise<Session> {
     try {
       const session = await auth.api.getSession({
-        headers: await headers(),
+        headers: headers,
       });
       if (!session) {
         throw new AuthenticationError("Perlu Sign up");
@@ -91,16 +89,23 @@ export class BetterAuthAuthenticationServices
       throw new SignUpError("Unexpected Error");
     }
   }
+  async verifySession(headers: ReadonlyHeaders): Promise<boolean> {
+    try {
+      const session = await auth.api.getSession({
+        headers: headers,
+      });
+      if (!session) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
   async deleteUser(idUser: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
   async getUserData(args: string): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
-  async verifySession(
-    sessionId: string | undefined,
-    sessionToken: string | undefined
-  ): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
 
