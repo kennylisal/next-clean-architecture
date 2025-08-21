@@ -6,6 +6,8 @@ import { getGeneralPostController } from "@/interface-adapters/controllers/posts
 import { getPostDetailController } from "@/interface-adapters/controllers/posts/get-post-detail-controller";
 import { getPostDetail } from "@/application/use-case/posts/get-post-detail-usecase";
 import { getGeneralPost } from "@/application/use-case/posts/get-general-post.usecase";
+import { createPostUseCase } from "@/application/use-case/posts/create-post-usecase";
+import { createPostController } from "@/interface-adapters/controllers/posts/create-post.controller";
 
 export function createPostsModule() {
   const postsModule = createModule();
@@ -27,6 +29,22 @@ export function createPostsModule() {
     .bind(DI_SYMBOLS.IGetPostDetailController)
     .toHigherOrderFunction(getPostDetailController, [
       DI_SYMBOLS.IGetPostDetailUseCase,
+      DI_SYMBOLS.IAuthenticationServices,
+    ]);
+
+  postsModule
+    .bind(DI_SYMBOLS.ICreatePostUseCase)
+    .toHigherOrderFunction(createPostUseCase, [
+      DI_SYMBOLS.IPostRepository,
+      DI_SYMBOLS.IAuthorizationServices,
+      DI_SYMBOLS.IUserRepository,
+      DI_SYMBOLS.IDomainMembershipsRepository,
+    ]);
+
+  postsModule
+    .bind(DI_SYMBOLS.ICreatePostController)
+    .toHigherOrderFunction(createPostController, [
+      DI_SYMBOLS.ICreatePostUseCase,
       DI_SYMBOLS.IAuthenticationServices,
     ]);
 
