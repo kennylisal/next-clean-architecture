@@ -3,6 +3,7 @@ import { CreateDomain, Domain, DomainHeader } from "@/entities/models/domain";
 import { Knex } from "knex";
 import knexDB from "../config/knex_db";
 import executeQuery from "../utils/query-helper";
+import { PSQLTransaction } from "../services/transaction-manager.service.psql";
 
 export class DomainsSQLRepositories implements IDomainRepository {
   async isDomainNameTaken(
@@ -18,9 +19,9 @@ export class DomainsSQLRepositories implements IDomainRepository {
   }
   async createDomain(
     domain: CreateDomain,
-    trx?: Knex.Transaction
+    trx?: PSQLTransaction
   ): Promise<number> {
-    const db = trx || knexDB;
+    const db = trx?.trxInstance || knexDB;
     const query = db("domains").insert(domain).returning("domain_id");
     const result: { domain_id: number }[] = await executeQuery(
       query,

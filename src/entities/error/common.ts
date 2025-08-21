@@ -10,6 +10,12 @@ export class InputParseError extends Error {
   }
 }
 
+export class InvalidDomainMembershipRoleError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}
+
 export class AuthenticationError extends Error {
   constructor(message: string, options?: ErrorOptions) {
     super(message, options);

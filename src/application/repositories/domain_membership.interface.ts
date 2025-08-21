@@ -2,6 +2,7 @@ import {
   CreateDomainMembership,
   DomainMembership,
 } from "@/entities/models/domain-membership";
+import { ITransaction } from "@/entities/models/transaction.interface";
 
 export interface IDomainMembershipRepository {
   getDomainMemberCount(domainId: number): Promise<number>;
@@ -9,7 +10,10 @@ export interface IDomainMembershipRepository {
     member_id: string,
     domain_id: number
   ): Promise<DomainMembership | undefined>;
-  createDomainMembership(schema: CreateDomainMembership): Promise<number>;
+  createDomainMembership(
+    schema: CreateDomainMembership,
+    trx?: ITransaction
+  ): Promise<number>;
   getMembershipDetail(membershipId: number): Promise<DomainMembership>;
   getUserMemberships(userId: string): Promise<DomainMembership[]>;
 }

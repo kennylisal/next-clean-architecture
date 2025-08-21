@@ -6,6 +6,7 @@ import {
 import knexDB from "../config/knex_db";
 import executeQuery from "../utils/query-helper";
 import { Knex } from "knex";
+import { PSQLTransaction } from "../services/transaction-manager.service.psql";
 
 export class DomainsMembershipSQLRepositories
   implements IDomainMembershipRepository
@@ -38,9 +39,9 @@ export class DomainsMembershipSQLRepositories
   }
   async createDomainMembership(
     schema: CreateDomainMembership,
-    trx?: Knex.Transaction
+    trx?: PSQLTransaction
   ): Promise<number> {
-    const db = trx || knexDB;
+    const db = trx?.trxInstance || knexDB;
     const query = db("domains_membership")
       .insert(schema)
       .returning("membership_id");

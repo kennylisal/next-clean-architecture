@@ -1,6 +1,7 @@
 import { CreatePost, Post } from "@/entities/models/post";
 import { PaginationQuery } from "@/entities/models/query";
 import { QueryResponse } from "@/entities/models/response";
+import { ITransaction } from "@/entities/models/transaction.interface";
 
 export interface PostsQuery extends PaginationQuery {
   dateStart?: string;
@@ -13,7 +14,7 @@ export interface PostsQuery extends PaginationQuery {
 export interface IPostRepository {
   getPost(id: number): Promise<Post>;
   getPosts(query: PostsQuery): Promise<QueryResponse<Post[]>>;
-  createPost(schema: CreatePost): Promise<number>;
+  createPost(schema: CreatePost, trx?: ITransaction): Promise<number>;
   getUserPost(
     query: PostsQuery,
     userId: string

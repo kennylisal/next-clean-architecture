@@ -1,10 +1,10 @@
+import { ITransaction } from "@/entities/models/transaction.interface";
 import {
   ACCOUNT_ROLE,
   CreateUser,
   User,
   UserMetaData,
 } from "@/entities/models/user";
-import { Knex } from "knex";
 
 export interface IUsersRepository {
   getUserData(id: string): Promise<User>;
@@ -13,7 +13,7 @@ export interface IUsersRepository {
   createUser(
     createUser: CreateUser,
     userId: string,
-    trx?: Knex.Transaction
+    trx?: ITransaction
   ): Promise<boolean>;
   getUserRole(id: string): Promise<ACCOUNT_ROLE>;
 }

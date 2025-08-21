@@ -1,4 +1,5 @@
 import z from "zod";
+import { InvalidDomainMembershipRoleError } from "../error/common";
 
 export interface DomainMembership {
   membership_id: number;
@@ -27,4 +28,15 @@ export enum DOMAIN_MEMBERSHIP_ROLE {
   MODERATOR = "moderator",
   ADMIN = "admin",
   CREATOR = "creator",
+}
+
+export function toDomainMembershipRole(value: string): DOMAIN_MEMBERSHIP_ROLE {
+  if (
+    Object.values(DOMAIN_MEMBERSHIP_ROLE).includes(
+      value as DOMAIN_MEMBERSHIP_ROLE
+    )
+  ) {
+    return value as DOMAIN_MEMBERSHIP_ROLE;
+  }
+  throw new InvalidDomainMembershipRoleError(`Invalid role: ${value}`);
 }

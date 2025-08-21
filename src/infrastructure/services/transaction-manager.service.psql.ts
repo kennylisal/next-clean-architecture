@@ -2,7 +2,6 @@ import { ItransactionManagerService } from "@/application/services/transaction-m
 import { ITransaction } from "@/entities/models/transaction.interface";
 import knexDB from "../config/knex_db";
 import { Knex } from "knex";
-import { PostSQLRepositories } from "../repositories/post.repository.sql";
 import { DatabaseError } from "@/entities/error/common";
 
 const db = knexDB;
@@ -15,7 +14,7 @@ export class PSQLTransactionManagerService
     parent?: PSQLTransaction
   ): Promise<T> {
     // Use parent transaction if provided, otherwise use main db
-    const invoker = parent instanceof PSQLTransaction ? parent.trx : db;
+    const invoker = parent instanceof PSQLTransaction ? parent.trxInstance : db;
     return invoker.transaction(async (trx) => {
       const transaction = new PSQLTransaction(trx);
       try {
@@ -35,15 +34,15 @@ export class PSQLTransactionManagerService
 }
 
 export class PSQLTransaction implements ITransaction {
-  readonly trx: Knex.Transaction;
+  readonly trxInstance: Knex.Transaction;
   constructor(trx: Knex.Transaction) {
-    this.trx = trx;
+    this.trxInstance = trx;
   }
   async commit() {
-    await this.trx.commit();
+    await this.trxInstance.commit();
   }
   async rollback() {
-    await this.trx.rollback();
+    await this.trxInstance.rollback();
   }
 }
 
