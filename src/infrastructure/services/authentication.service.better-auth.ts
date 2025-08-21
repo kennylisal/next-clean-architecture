@@ -40,7 +40,12 @@ export class BetterAuthAuthenticationServices
         userId: session.user.id,
       };
     } catch (error) {
-      throw error;
+      if (error instanceof APIError) {
+        throw new AuthenticationError("Session is not valid", {
+          cause: error.message,
+        });
+      }
+      throw new AuthenticationError("Session is not valid");
     }
   }
   async signInEmail(email: string, password: string): Promise<boolean> {

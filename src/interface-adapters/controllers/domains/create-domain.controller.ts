@@ -24,9 +24,7 @@ export const createDomainController =
       throw new InputParseError("Invalid data", { cause: inputParseError });
     }
     const session = await authenticationService.getSessionWithHeaders(headers);
-    if (!session) {
-      throw new AuthenticationError("Session is not valid");
-    }
+
     const res = await createDomainUseCase(domainData, session.userId);
     return presenter(domainData, res);
   };

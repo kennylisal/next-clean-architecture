@@ -1,11 +1,11 @@
-import { IDomainRepository } from "@/application/repositories/domain.repository.interface";
+import { IDomainsRepository } from "@/application/repositories/domain.repository.interface";
 import { CreateDomain, Domain, DomainHeader } from "@/entities/models/domain";
 import { Knex } from "knex";
 import knexDB from "../config/knex_db";
 import executeQuery from "../utils/query-helper";
 import { PSQLTransaction } from "../services/transaction-manager.service.psql";
 
-export class DomainsSQLRepositories implements IDomainRepository {
+export class DomainsSQLRepositories implements IDomainsRepository {
   async isDomainNameTaken(
     domainName: string,
     trx?: Knex.Transaction
@@ -40,5 +40,13 @@ export class DomainsSQLRepositories implements IDomainRepository {
       .where("domain_id", "=", domainId)
       .first();
     return await executeQuery(query, "SELECT", "DOMAINS");
+  }
+
+  async getAllDomainName(): Promise<{ domain_name: string }[]> {
+    const query = knexDB("domains").select("domain_name");
+    const res = executeQuery(query, "READ", "domains");
+    return res as unknown as {
+      domain_name: string;
+    }[];
   }
 }

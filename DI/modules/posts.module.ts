@@ -4,7 +4,7 @@ import { MockPostRepositories } from "@/infrastructure/repositories/post.reposit
 import { PostSQLRepositories } from "@/infrastructure/repositories/post.repository.sql";
 import { getGeneralPostController } from "@/interface-adapters/controllers/posts/get-general-post.controller";
 import { getPostDetailController } from "@/interface-adapters/controllers/posts/get-post-detail-controller";
-import { getPostDetailUseCase } from "@/application/use-case/posts/get-post-detail-usecase";
+import { getPostDetail } from "@/application/use-case/posts/get-post-detail-usecase";
 import { getGeneralPost } from "@/application/use-case/posts/get-general-post.usecase";
 
 export function createPostsModule() {
@@ -32,7 +32,7 @@ export function createPostsModule() {
 
   postsModule
     .bind(DI_SYMBOLS.IGetPostDetailUseCase)
-    .toHigherOrderFunction(getPostDetailUseCase, [DI_SYMBOLS.IPostRepository]);
+    .toHigherOrderFunction(getPostDetail, [DI_SYMBOLS.IPostRepository]);
 
   postsModule
     .bind(DI_SYMBOLS.IGetGeneralPostUseCase)

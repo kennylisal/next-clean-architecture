@@ -96,7 +96,7 @@ export default function SignUpPage() {
             <InputLabel>Role</InputLabel>
             <Select {...register("role")} label="Role">
               <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="teacher">Teacher</MenuItem>
             </Select>
             {errors.role && (
               <Typography variant="caption" color="error">

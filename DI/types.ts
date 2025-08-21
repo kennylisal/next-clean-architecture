@@ -7,7 +7,7 @@ import { ISignInUseCase } from "@/application/use-case/auth/sign-in.use-case";
 import { ISignOutUseCase } from "@/application/use-case/auth/sign-out.use-case";
 import { ISignupUseCase } from "@/application/use-case/auth/sign-up.use-case";
 import { IGetGeneralPostUseCase } from "@/application/use-case/posts/get-general-post.usecase";
-import { IGetPostDetailUseCase } from "@/application/use-case/posts/get-post-detail-usecase";
+import { IGetPostDetailToReadUseCase } from "@/application/use-case/posts/get-post-detail-usecase";
 import { ISignInController } from "@/interface-adapters/controllers/auth/sign-in.controller";
 import { ISignOutController } from "@/interface-adapters/controllers/auth/sign-out.controller";
 import { ISignUpController } from "@/interface-adapters/controllers/auth/sign-up.controller";
@@ -49,7 +49,7 @@ export interface DI_RETURN_TYPES {
   IUserRepository: IUsersRepository;
 
   //use case
-  IGetPostDetailUseCase: IGetPostDetailUseCase;
+  IGetPostDetailUseCase: IGetPostDetailToReadUseCase;
   IGetGeneralPostUseCase: IGetGeneralPostUseCase;
   ISignOutUseCase: ISignOutUseCase;
   ISignInUseCase: ISignInUseCase;

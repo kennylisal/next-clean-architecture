@@ -1,4 +1,4 @@
-import { IDomainRepository } from "@/application/repositories/domain.repository.interface";
+import { IDomainsRepository } from "@/application/repositories/domain.repository.interface";
 import { IDomainMembershipRepository } from "@/application/repositories/domain_membership.interface";
 import { IUsersRepository } from "@/application/repositories/users.repository.interface";
 import { IAuthorizationServices } from "@/application/services/authorization.service.interface";
@@ -9,7 +9,7 @@ export type ICreateDomainUseCase = ReturnType<typeof createDomain>;
 
 export const createDomain =
   (
-    domainRepo: IDomainRepository,
+    domainRepo: IDomainsRepository,
     userDetailRepo: IUsersRepository,
     domainMembershipRepo: IDomainMembershipRepository,
     authorizationService: IAuthorizationServices,
