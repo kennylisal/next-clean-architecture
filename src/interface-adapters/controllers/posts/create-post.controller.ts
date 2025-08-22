@@ -11,9 +11,9 @@ function presenter(input: InputPost, newPostId: number) {
   };
 }
 
-export type IcreatePostController = ReturnType<typeof createPost>;
+export type IcreatePostController = ReturnType<typeof createPostController>;
 
-export const createPost =
+export const createPostController =
   (
     createPostUseCase: ICreatePostUseCase,
     authenticationService: IAuthenticationService

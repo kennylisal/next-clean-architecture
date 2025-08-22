@@ -1,6 +1,6 @@
 import { IAuthenticationService } from "@/application/services/authentication.service.interface";
 import { ICreateDomainUseCase } from "@/application/use-case/domain/create-domain.usecase";
-import { AuthenticationError, InputParseError } from "@/entities/error/common";
+import { InputParseError } from "@/entities/error/common";
 import { CreateDomain, createDomainSchema } from "@/entities/models/domain";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 

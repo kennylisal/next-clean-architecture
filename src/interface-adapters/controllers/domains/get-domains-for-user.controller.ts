@@ -1,5 +1,5 @@
 import { IAuthenticationService } from "@/application/services/authentication.service.interface";
-import { IGetDomainUseCase } from "@/application/use-case/domain/get-domains.usecase";
+import { IGetDomainsUseCase } from "@/application/use-case/domain/get-domains.usecase";
 import { DomainMembership } from "@/entities/models/domain-membership";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
@@ -19,7 +19,7 @@ export type IGetDomainForUserController = ReturnType<
 
 export const getDomainsForUserController =
   (
-    getDomainUseCase: IGetDomainUseCase,
+    getDomainUseCase: IGetDomainsUseCase,
     authenticationService: IAuthenticationService
   ) =>
   async (headers: ReadonlyHeaders) => {

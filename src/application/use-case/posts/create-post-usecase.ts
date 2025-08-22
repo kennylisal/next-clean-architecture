@@ -9,9 +9,9 @@ import { ACCOUNT_ROLE } from "@/entities/models/user";
 import { RESOURCE } from "@/entities/models/usercase-actions";
 import { GENERAL_DOMAIN_ID } from "@/utils/const";
 
-export type ICreatePostUseCase = ReturnType<typeof createPost>;
+export type ICreatePostUseCase = ReturnType<typeof createPostUseCase>;
 
-export const createPost =
+export const createPostUseCase =
   (
     postRepo: IPostRepository,
     authorizationService: IAuthorizationServices,
@@ -22,10 +22,7 @@ export const createPost =
     if (postData.domain_id === GENERAL_DOMAIN_ID) {
       //general post
       const userRole: ACCOUNT_ROLE = await userRepo.getUserRole(userId);
-
-      await authorizationService.isAuthorizedForAdministrationalAction(
-        userRole
-      );
+      authorizationService.isAuthorizedForAdministrationalAction(userRole);
     } else {
       //domain post
       const membershipDetail = await domainMembershipRepo.getDomainMemberStatus(
@@ -36,7 +33,7 @@ export const createPost =
         throw new AuthorizationError("User is not part of the domain");
       }
 
-      await authorizationService.isAuthorizedToCreateOrUpdateOrDelete(
+      authorizationService.isAuthorizedToCreateOrUpdateOrDelete(
         RESOURCE.POST,
         toDomainMembershipRole(membershipDetail.member_role)
       );

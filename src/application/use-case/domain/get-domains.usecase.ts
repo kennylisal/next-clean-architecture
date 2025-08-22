@@ -1,7 +1,7 @@
 import { IDomainsRepository } from "@/application/repositories/domain.repository.interface";
 import { IDomainMembershipRepository } from "@/application/repositories/domain_membership.interface";
 
-export type IGetDomainUseCase = ReturnType<typeof getDomains>;
+export type IGetDomainsUseCase = ReturnType<typeof getDomains>;
 
 export const getDomains =
   (

@@ -35,18 +35,17 @@ export default function CreatePage() {
   ));
   return (
     <Container maxWidth={"xl"}>
-      <PageHeader
-        title={"Create post"}
-        breadcrumbs={["Blog", "Create post"]}
-        renderRight={
-          <Stack direction={"row"} justifyContent={"flex-end"} spacing={2}>
-            <Button variant={"outlined"}>Cancel</Button>
-            <Button variant={"contained"}>Publish</Button>
-          </Stack>
-        }
-      />
-
       <form>
+        <PageHeader
+          title={"Create post"}
+          breadcrumbs={["Blog", "Create post"]}
+          renderRight={
+            <Stack direction={"row"} justifyContent={"flex-end"} spacing={2}>
+              <Button variant={"outlined"}>Cancel</Button>
+              <Button variant={"contained"}>Publish</Button>
+            </Stack>
+          }
+        />
         <Grid container spacing={2}>
           <Grid size={{ xs: 8 }}>
             <Paper sx={{ padding: 4 }}>

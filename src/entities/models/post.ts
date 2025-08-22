@@ -10,8 +10,8 @@ export interface Post {
 }
 
 export const createPostSchema = z.object({
-  body: z.string().min(50),
-  title: z.string().min(20),
+  body: z.string().min(20),
+  title: z.string().min(10),
   author: z.string(),
   domain_id: z.number(),
 });
