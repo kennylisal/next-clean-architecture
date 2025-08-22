@@ -1,118 +1,117 @@
-"use server";
-import React from "react";
-import JobsList from "@/components/pages/jobs/jobs-list/JobsListPage";
-import { Container } from "@mui/material";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+"use client";
 
-export default async function Home() {
-  // const itemPerPage = 10;
-  // const [page, setPage] = useState(1);
-  // const [displayedData, setDisplayedData] = useState<PostHeader[]>([]);
-  // const [totalData, setTotalData] = useState(0);
+import { PageHeader } from "@/components/page-header/PageHeader";
+import { JobsSearch } from "@/components/widget/jobs/jobs-search/JobsSearch";
+import { PostAdd } from "@mui/icons-material";
+import { Button, Container, Pagination, Stack } from "@mui/material";
+import { useEffect, useReducer, useState } from "react";
+import { GeneralPosts } from "./posts";
+import { QueryResponse } from "@/entities/models/response";
+import { PostHeader } from "@/entities/models/post";
+import { LoadingSpinner } from "@/components/loading/loadingSpinner";
+import { ErrorDisplay } from "@/components/error/error_display";
+import { itemPerPage } from "@/utils/const";
+import { postsStateReducer, QueryState, State } from "./action";
 
-  // useEffect(() => {
-  //   const res = async () => {
-  //     try {
-  //       const query = await getPostsDashboard({
-  //         page: page,
-  //         itemPerPage: itemPerPage,
-  //       });
-  //       setDisplayedData(query!.data);
-  //       if (totalData === 0) setTotalData(query.totalItem);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+const initialState: State<QueryResponse<PostHeader[]>> = {
+  status: "loading",
+  component: <LoadingSpinner />,
+};
 
-  //   res();
-  // }, [page]);
+const baseQueryState: QueryState = {
+  page: 1,
+  totalPage: 1,
+};
 
-  // const CardWrapper = styled(Card)(({ theme }) => ({
-  //   marginBottom: 10,
-  //   cursor: "pointer",
-  //   transition: theme.transitions.create(["box-shadow", "background-color"], {
-  //     duration: theme.transitions.duration.shorter,
-  //   }),
-  //   "&:hover": {
-  //     boxShadow: theme.shadows[15],
-  //     backgroundColor: theme.palette.grey[50],
-  //   },
-  // }));
+const getURLHelper = (args: Record<string, string | undefined>) => {
+  let result = "";
+  for (const key in args) {
+    if (args[key] !== undefined) result += `&${key}=${args[key]}`;
+  }
+  return result;
+};
 
-  // const jobsTagsList = ({ tags }: { tags: string[] }) => {
-  //   return tags.map((tag, index) => (
-  //     <Chip
-  //       key={`${tag}_${index}`}
-  //       label={tag}
-  //       size={"small"}
-  //       variant={"filled"}
-  //     />
-  //   ));
-  // };
+export default function TestPage() {
+  const [pageState, dispatch] = useReducer(postsStateReducer, initialState);
+  const [queryState, setQueryState] = useState<QueryState>(baseQueryState);
 
-  // const handlePagination = (
-  //   event: React.ChangeEvent<unknown>,
-  //   value: number
-  // ) => {
-  //   setPage(value);
-  // };
+  const generateApiUrl = (page: number) => {
+    const initUrl = `/api/posts?page=${page}&itemPerPage=${itemPerPage}`;
+    const additionalParameters = getURLHelper({
+      searchQuery: queryState.searchQuery,
+      dateStart: queryState.dateStart,
+      dateEnd: queryState.dateEnd,
+    });
+    console.log(initUrl + additionalParameters);
+    return initUrl + additionalParameters;
+  };
 
-  // function ContentHandler() {
-  //   if (totalData === 0) {
-  //     return <LoadingSpinner />;
-  //   } else {
-  //     return (
-  //       <>
-  //         <List sx={{ marginTop: 2 }}>
-  //           {displayedData.map((data) => (
-  //             <CardWrapper key={`${data.title}-${data.author}`}>
-  //               <CardContent>
-  //                 <Stack direction={"row"} justifyContent={"space-between"}>
-  //                   <Stack>
-  //                     <Typography variant="h6" component={"h2"}>
-  //                       {data.title}
-  //                     </Typography>
-  //                     <Typography variant="subtitle1" component={"h3"}>
-  //                       {data.author} - {"Sekolah"}
-  //                     </Typography>
-  //                   </Stack>
-  //                   <Typography
-  //                     fontWeight={"fontWeightMedium"}
-  //                     variant="subtitle1"
-  //                   >
-  //                     {"Seluruh Siswa"}
-  //                   </Typography>
-  //                 </Stack>
-  //                 <Stack mt={1} direction={"row"} spacing={1}>
-  //                   {jobsTagsList({
-  //                     tags: ["siswa", "pendidikan semester", "SKS"],
-  //                   })}
-  //                 </Stack>
-  //               </CardContent>
-  //             </CardWrapper>
-  //           ))}
-  //         </List>
-  //         <Stack alignItems={"center"}>
-  //           <Pagination
-  //             count={Math.ceil(totalData / itemPerPage)}
-  //             variant="outlined"
-  //             shape="rounded"
-  //             onChange={handlePagination}
-  //           />
-  //         </Stack>
-  //       </>
-  //     );
-  //   }
-  // }
-  // const session = await auth.api.getSession({
-  //   headers: await headers(),
-  // });
-  // console.log(session);
+  const handleSearch = (
+    dateStart: string | undefined,
+    dateEnd: string | undefined,
+    search: string | undefined
+  ) => {
+    setQueryState((prev) => ({
+      ...prev,
+      page: 1,
+      searchQuery: search,
+      dateEnd: dateEnd,
+      dateStart: dateStart,
+    }));
+    console.log(queryState.searchQuery);
+  };
+
+  const fetchPost = async (page: number) => {
+    try {
+      const res = await fetch(generateApiUrl(page));
+      if (!res.ok) {
+        dispatch({
+          type: "FETCH_ERROR",
+          payload: "Failed fetching data",
+          component: <ErrorDisplay text="Failed fetching data" />,
+        });
+      } else {
+        const data = (await res.json()) as QueryResponse<PostHeader[]>;
+        // console.log(data);
+        dispatch({
+          type: "FETCH_SUCCESS",
+          payload: data,
+          component: <GeneralPosts posts={data.data} />,
+        });
+        setQueryState((prev) => ({
+          ...prev,
+          page: data.page,
+          totalPage: Math.ceil(data.totalItem / itemPerPage),
+        }));
+      }
+      console.log(queryState);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unexpected Error Fetching Data";
+      dispatch({
+        type: "FETCH_ERROR",
+        payload: message,
+        component: <ErrorDisplay text={message} />,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchPost(queryState.page);
+  }, [queryState.page, queryState.searchQuery]);
+
+  const handlePagination = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setQueryState((prev) => ({ ...prev, page: value }));
+  };
+
   return (
     <Container maxWidth={"lg"}>
-      <h1>Posts</h1>
-      {/* <PageHeader
+      <PageHeader
         title={"Jobs"}
         breadcrumbs={["Jobs", "List"]}
         renderRight={
@@ -121,8 +120,19 @@ export default async function Home() {
           </Button>
         }
       />
-      <JobsSearch />
-      <ContentHandler /> */}
+      <JobsSearch handleSearch={handleSearch} />
+      {pageState.component}
+      <Stack alignItems={"center"}>
+        {pageState.status === "success" && (
+          <Pagination
+            page={queryState.page}
+            count={queryState.totalPage}
+            variant="outlined"
+            shape="rounded"
+            onChange={handlePagination}
+          />
+        )}
+      </Stack>
     </Container>
   );
 }

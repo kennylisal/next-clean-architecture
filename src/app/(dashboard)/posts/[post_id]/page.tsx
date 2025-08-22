@@ -11,7 +11,7 @@ import { ErrorDisplay } from "@/components/error/error_display";
 import { Post } from "@/entities/models/post";
 import { useParams } from "next/navigation";
 import { PostDetail } from "../../detail/detail";
-import { postsStateReducer, State } from "../action";
+import { postsStateReducer, State } from "../../posts/action";
 
 const initialState: State<Post> = {
   status: "loading",

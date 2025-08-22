@@ -5,7 +5,7 @@ import { FavoriteBorder, OpenInNew } from "@mui/icons-material";
 
 import { Button, Container, Stack } from "@mui/material";
 import { useEffect, useReducer } from "react";
-import { postsStateReducer, State } from "../test/action";
+import { postsStateReducer, State } from "../posts/action";
 import { LoadingSpinner } from "@/components/loading/loadingSpinner";
 import { PostDetail } from "./detail";
 import { ErrorDisplay } from "@/components/error/error_display";

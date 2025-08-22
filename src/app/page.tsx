@@ -18,7 +18,7 @@ export default function Home() {
           </Button>
         }
       />
-      <JobsSearch />
+      {/* <JobsSearch handleSearch={}/> */}
       <Suspense fallback={<LoadingSpinner />}>
         <GeneralPostWrapper />
       </Suspense>
