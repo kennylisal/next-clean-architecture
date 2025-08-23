@@ -39,6 +39,7 @@ async function seeder(knex) {
   const domainArr = await knexDB("domains")
     .insert(domains)
     .returning("domain_id");
+  // console.log(domainArr);
   const postsData = Array.from({ length: iteration }, () => ({
     body: faker.lorem.paragraphs({ min: 2, max: 4 }),
     title: faker.lorem.words({ min: 4, max: 10 }),

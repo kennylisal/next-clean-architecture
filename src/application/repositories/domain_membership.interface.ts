@@ -9,7 +9,7 @@ export interface IDomainMembershipRepository {
   getDomainMemberStatus(
     member_id: string,
     domain_id: number
-  ): Promise<DomainMembership | undefined>;
+  ): Promise<DomainMembership>;
   createDomainMembership(
     schema: CreateDomainMembership,
     trx?: ITransaction

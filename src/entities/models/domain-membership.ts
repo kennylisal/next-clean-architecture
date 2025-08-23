@@ -4,7 +4,7 @@ import { InvalidDomainMembershipRoleError } from "../error/common";
 export interface DomainMembership {
   membership_id: number;
   member_id: string;
-  domain_id: string;
+  domain_id: number;
   created_at: string;
   membership_status: string;
   member_role: string;

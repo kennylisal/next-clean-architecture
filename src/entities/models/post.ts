@@ -3,10 +3,10 @@ import z from "zod";
 export interface Post {
   post_id: number;
   title: string;
-  created_at: string;
+  created_at: Date;
   author: string;
   body: string;
-  domain: string;
+  domain_id: number;
 }
 
 export const createPostSchema = z.object({

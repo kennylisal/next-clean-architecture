@@ -15,7 +15,7 @@ export class DomainsMembershipSQLRepositories
     member_id: string,
     domain_id: number,
     trx?: Knex.Transaction
-  ): Promise<DomainMembership | undefined> {
+  ): Promise<DomainMembership> {
     const db = trx || knexDB;
     const query = db("domains_membership")
       .where({

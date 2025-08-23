@@ -1,4 +1,4 @@
-import { DatabaseError } from "@/entities/error/common";
+import { DatabaseError, DatabaseOperationError } from "@/entities/error/common";
 import { Knex } from "knex";
 
 export default async function executeQuery<T>(
@@ -7,10 +7,15 @@ export default async function executeQuery<T>(
   table: string
 ): Promise<T> {
   try {
+    const result = await query;
+    if (!result) {
+      throw new DatabaseOperationError(`Requested ${table} data is not found`);
+    }
+    // console.log(typeof result.created_at, result.created_at);
+    return result;
+  } catch (error) {
     const sql = query.toSQL().sql;
     console.log(sql);
-    return await query;
-  } catch (error) {
     const message =
       error instanceof Error ? error.message : "Uknown Database Error";
     throw new DatabaseError(message, `${operation} on ${table}`);

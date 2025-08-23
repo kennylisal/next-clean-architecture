@@ -50,7 +50,10 @@ export function createPostsModule() {
 
   postsModule
     .bind(DI_SYMBOLS.IGetPostDetailUseCase)
-    .toHigherOrderFunction(getPostDetail, [DI_SYMBOLS.IPostRepository]);
+    .toHigherOrderFunction(getPostDetail, [
+      DI_SYMBOLS.IPostRepository,
+      DI_SYMBOLS.IDomainMembershipsRepository,
+    ]);
 
   postsModule
     .bind(DI_SYMBOLS.IGetGeneralPostUseCase)
