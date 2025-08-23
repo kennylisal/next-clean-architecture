@@ -1,1 +1,1 @@
-export const APP_NAME = "DevZone";
+export const APP_NAME = "Student Information System";

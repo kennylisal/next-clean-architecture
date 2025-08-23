@@ -1,9 +1,7 @@
 "use client";
 import { RichTextEditor } from "@/components/rich-text-editor/RichTextEditor";
 import {
-  Button,
   Chip,
-  Container,
   Divider,
   Grid,
   List,
@@ -15,11 +13,7 @@ import {
 } from "@mui/material";
 import { Post } from "@/entities/models/post";
 
-import { PageHeader } from "@/components/page-header/PageHeader";
-import { FavoriteBorder, OpenInNew } from "@mui/icons-material";
-
 export function PostDetail({ postData }: { postData: Post }) {
-  console.log(postData);
   const jobsTagsList = ["Marketing", "Digital Marketing", "Communications"].map(
     (tag, index) => <Chip size={"small"} key={`${tag}_${index}`} label={tag} />
   );
@@ -70,38 +64,6 @@ export function PostDetail({ postData }: { postData: Post }) {
         </Paper>
       </Grid>
     </Grid>
-  );
-}
-
-export default function PostDetailPage({ postData }: { postData: Post }) {
-  return (
-    <Container>
-      <PageHeader
-        title="Halaman Detail"
-        breadcrumbs={["Jobs", "Details"]}
-        renderRight={
-          <Stack direction={"row"} spacing={1}>
-            <Button
-              variant={"outlined"}
-              color={"secondary"}
-              //   onClick={() => navigate(routes.jobsEdit)}
-            >
-              Edit
-            </Button>
-            <Button color={"error"} variant={"outlined"}>
-              Remove
-            </Button>
-            <Button variant={"outlined"} startIcon={<FavoriteBorder />}>
-              Save
-            </Button>
-            <Button variant={"contained"} startIcon={<OpenInNew />}>
-              Apply
-            </Button>
-          </Stack>
-        }
-      />
-      <PostDetail postData={postData} />
-    </Container>
   );
 }
 // const job = {

@@ -1,11 +1,11 @@
 "use server";
 
 import { notFound } from "next/navigation";
-import PostDetailPage from "./detail";
 import { getInjection } from "../../../../../DI/container";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/loading/loadingSpinner";
+import { PostDetail } from "./detail";
 
 interface DetailPostProps {
   params: {
@@ -23,7 +23,7 @@ export default async function Page({ params }: DetailPostProps) {
   const data = await getPostDetail(postIdNumber);
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <PostDetailPage postData={data.postData} />;
+      <PostDetail postData={data.postData} />;
     </Suspense>
   );
 }

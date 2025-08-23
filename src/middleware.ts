@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
 const isPublicRoute = (path: string) =>
-  path === "/login" || path === "/register" || path === "/";
+  path === "/login" ||
+  path === "/register" ||
+  path === "/" ||
+  path === "/about";
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);

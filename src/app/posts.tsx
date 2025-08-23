@@ -49,6 +49,7 @@ export function GeneralPosts({ posts }: { posts: PostHeader[] | undefined }) {
         <List sx={{ marginTop: 2 }}>
           {displayedData.map((data) => (
             <CardWrapper
+              sx={{ border: "1px black solid" }}
               key={`${data.title}-${data.author}`}
               onClick={() => {
                 router.push(`/test/${data.post_id}`);

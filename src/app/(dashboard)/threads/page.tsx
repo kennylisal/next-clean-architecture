@@ -120,8 +120,7 @@ export default function RedditThread() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      {/* Post Card */}
+    <>
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <Box sx={{ display: "flex", alignItems: "flex-start" }}>
@@ -197,7 +196,7 @@ export default function RedditThread() {
       {post.comments.map((comment) => (
         <Comment key={comment.id} comment={comment} depth={0} />
       ))}
-    </Container>
+    </>
   );
 }
 

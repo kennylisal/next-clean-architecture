@@ -110,16 +110,7 @@ export default function TestPage() {
   };
 
   return (
-    <Container maxWidth={"lg"}>
-      <PageHeader
-        title={"Jobs"}
-        breadcrumbs={["Jobs", "List"]}
-        renderRight={
-          <Button variant={"contained"} startIcon={<PostAdd />}>
-            Create
-          </Button>
-        }
-      />
+    <>
       <JobsSearch handleSearch={handleSearch} />
       {pageState.component}
       <Stack alignItems={"center"}>
@@ -133,6 +124,33 @@ export default function TestPage() {
           />
         )}
       </Stack>
-    </Container>
+    </>
   );
 }
+
+// return (
+//   <Container maxWidth={"lg"}>
+//     <PageHeader
+//       title={"Jobs"}
+//       breadcrumbs={["Jobs", "List"]}
+//       renderRight={
+//         <Button variant={"contained"} startIcon={<PostAdd />}>
+//           Create
+//         </Button>
+//       }
+//     />
+//     <JobsSearch handleSearch={handleSearch} />
+//     {pageState.component}
+//     <Stack alignItems={"center"}>
+//       {pageState.status === "success" && (
+//         <Pagination
+//           page={queryState.page}
+//           count={queryState.totalPage}
+//           variant="outlined"
+//           shape="rounded"
+//           onChange={handlePagination}
+//         />
+//       )}
+//     </Stack>
+//   </Container>
+// );

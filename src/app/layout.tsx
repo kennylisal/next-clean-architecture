@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SidebarLayout } from "@/components/sidebar-layout/SidebarLayout";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -14,9 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <SidebarLayout>{children}</SidebarLayout>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
