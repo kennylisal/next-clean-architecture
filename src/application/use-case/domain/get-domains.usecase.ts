@@ -9,6 +9,7 @@ export const getDomains =
     domainMembershipRepo: IDomainMembershipRepository
   ) =>
   async (userId: string) => {
+    //ASKINfVg1o5fkzZSuxR2Dn5YDAIBrZm3
     const domainList = await domainsRepo.getAllDomainName();
     const userDomains = await domainMembershipRepo.getUserMemberships(userId);
     return {

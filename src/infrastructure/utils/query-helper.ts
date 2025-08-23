@@ -11,7 +11,6 @@ export default async function executeQuery<T>(
     if (!result) {
       throw new DatabaseOperationError(`Requested ${table} data is not found`);
     }
-    // console.log(typeof result.created_at, result.created_at);
     return result;
   } catch (error) {
     const sql = query.toSQL().sql;

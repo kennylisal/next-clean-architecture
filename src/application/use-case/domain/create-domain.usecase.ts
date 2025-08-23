@@ -17,7 +17,7 @@ export const createDomain =
   ) =>
   async (domainData: CreateDomain, userId: string) => {
     const userRole = await userDetailRepo.getUserRole(userId);
-    await authorizationService.isAuthorizedForAdministrationalAction(userRole);
+    authorizationService.isAuthorizedForAdministrationalAction(userRole);
 
     return await transactionManagerService.startTransaction(async (trx) => {
       const domainId = await domainRepo.createDomain(domainData, trx);

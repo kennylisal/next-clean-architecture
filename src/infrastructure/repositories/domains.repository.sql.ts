@@ -42,11 +42,11 @@ export class DomainsSQLRepositories implements IDomainsRepository {
     return await executeQuery(query, "SELECT", "DOMAINS");
   }
 
-  async getAllDomainName(): Promise<{ domain_name: string }[]> {
-    const query = knexDB("domains").select("domain_name");
-    const res = executeQuery(query, "READ", "domains");
-    return res as unknown as {
-      domain_name: string;
-    }[];
+  async getAllDomainName(): Promise<
+    { domain_name: string; domain_id: number }[]
+  > {
+    const query = knexDB("domains").select("domain_name", "domain_id");
+    const res = await executeQuery(query, "READ", "domains");
+    return res as unknown as { domain_name: string; domain_id: number }[];
   }
 }

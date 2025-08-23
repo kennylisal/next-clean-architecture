@@ -9,6 +9,7 @@ import { ISignInUseCase } from "@/application/use-case/auth/sign-in.use-case";
 import { ISignOutUseCase } from "@/application/use-case/auth/sign-out.use-case";
 import { ISignupUseCase } from "@/application/use-case/auth/sign-up.use-case";
 import { ICreateDomainUseCase } from "@/application/use-case/domain/create-domain.usecase";
+import { IGetAvailableDomainsForUserToCreatePostUseCase } from "@/application/use-case/domain/get-avalilable-domains-for-user-to-craete-post.usecase";
 import { IGetDomainsUseCase } from "@/application/use-case/domain/get-domains.usecase";
 import { ICreatePostUseCase } from "@/application/use-case/posts/create-post-usecase";
 import { IGetGeneralPostUseCase } from "@/application/use-case/posts/get-general-post.usecase";
@@ -17,6 +18,7 @@ import { ISignInController } from "@/interface-adapters/controllers/auth/sign-in
 import { ISignOutController } from "@/interface-adapters/controllers/auth/sign-out.controller";
 import { ISignUpController } from "@/interface-adapters/controllers/auth/sign-up.controller";
 import { ICreateDomainController } from "@/interface-adapters/controllers/domains/create-domain.controller";
+import { IGetDomainsForCreatePostController } from "@/interface-adapters/controllers/domains/get-domains-for-create-post.controller";
 import { IGetDomainForUserController } from "@/interface-adapters/controllers/domains/get-domains-for-user.controller";
 import { IcreatePostController } from "@/interface-adapters/controllers/posts/create-post.controller";
 import { IGetGeneralPostController } from "@/interface-adapters/controllers/posts/get-general-post.controller";
@@ -38,6 +40,9 @@ export const DI_SYMBOLS = {
   IGetDomainForUserController: Symbol.for("IGetDomainForUserController"),
   ICreateDomainController: Symbol.for("ICreateDomainController"),
   ICreatePostController: Symbol.for("ICreatePostController"),
+  IGetDomainsForCreatePostController: Symbol.for(
+    "IGetDomainsForCreatePostController"
+  ),
 
   //use case
   IGetPostDetailUseCase: Symbol.for("IGetPostDetailUseCase"),
@@ -48,6 +53,9 @@ export const DI_SYMBOLS = {
   ICraeteDomainsUseCase: Symbol.for("ICraeteDomainsUseCase"),
   IGetDomainUseCase: Symbol.for("IGetDomainUseCase"),
   ICreatePostUseCase: Symbol.for("ICreatePostUseCase"),
+  IGetAvailableDomainsForUserToCreatePostUseCase: Symbol.for(
+    "IGetAvailableDomainsForUserToCreatePostUseCase"
+  ),
 
   //services
   IAuthenticationServices: Symbol.for("IAuthenticationService"),
@@ -76,6 +84,7 @@ export interface DI_RETURN_TYPES {
   ICraeteDomainsUseCase: ICreateDomainUseCase;
   IGetDomainUseCase: IGetDomainsUseCase;
   ICreatePostUseCase: ICreatePostUseCase;
+  IGetAvailableDomainsForUserToCreatePostUseCase: IGetAvailableDomainsForUserToCreatePostUseCase;
 
   //controller
   IGetGeneralPostController: IGetGeneralPostController;
@@ -86,4 +95,5 @@ export interface DI_RETURN_TYPES {
   IGetDomainForUserController: IGetDomainForUserController;
   ICreateDomainController: ICreateDomainController;
   ICreatePostController: IcreatePostController;
+  IGetDomainsForCreatePostController: IGetDomainsForCreatePostController;
 }

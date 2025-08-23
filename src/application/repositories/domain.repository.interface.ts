@@ -5,5 +5,5 @@ export interface IDomainsRepository {
   createDomain(domain: CreateDomain, trx?: ITransaction): Promise<number>;
   getDomainDetail(domainId: number): Promise<Domain>;
   isDomainNameTaken(domainName: string): Promise<boolean>;
-  getAllDomainName(): Promise<{ domain_name: string }[]>;
+  getAllDomainName(): Promise<{ domain_name: string; domain_id: number }[]>;
 }
