@@ -9,9 +9,13 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export function GeneralPosts({ posts }: { posts: PostHeader[] }) {
+export function GeneralPosts({ posts }: { posts: PostHeader[] | undefined }) {
+  const router = useRouter();
+  if (!posts) {
+    return <h1>Tidak ada data</h1>;
+  }
   const displayedData = posts;
 
   const CardWrapper = styled(Card)(({ theme }) => ({
@@ -37,13 +41,6 @@ export function GeneralPosts({ posts }: { posts: PostHeader[] }) {
     ));
   };
 
-  // const handlePagination = (
-  //   event: React.ChangeEvent<unknown>,
-  //   value: number
-  // ) => {
-  //   setPage(value);
-  // };
-
   if (posts.length === 0) {
     return <h2>Belum ada Data</h2>;
   } else {
@@ -51,7 +48,12 @@ export function GeneralPosts({ posts }: { posts: PostHeader[] }) {
       <>
         <List sx={{ marginTop: 2 }}>
           {displayedData.map((data) => (
-            <CardWrapper key={`${data.title}-${data.author}`}>
+            <CardWrapper
+              key={`${data.title}-${data.author}`}
+              onClick={() => {
+                router.push(`/test/${data.post_id}`);
+              }}
+            >
               <CardContent>
                 <Stack direction={"row"} justifyContent={"space-between"}>
                   <Stack>

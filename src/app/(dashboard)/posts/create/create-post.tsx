@@ -1,5 +1,4 @@
 "use client";
-import { LoadingSpinner } from "@/components/loading/loadingSpinner";
 import { PageHeader } from "@/components/page-header/PageHeader";
 import { RichTextEditor } from "@/components/rich-text-editor/RichTextEditor";
 import { InputPost, inputPostSchema } from "@/entities/models/post";

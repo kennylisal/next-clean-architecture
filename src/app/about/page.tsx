@@ -41,7 +41,7 @@ export default function LandingPage() {
           </Grid>
           <Grid>
             <Typography variant="h2" gutterBottom>
-              Welcome to Stunden Information System
+              Welcome to Stundent Information System
             </Typography>
           </Grid>
           <Grid>
