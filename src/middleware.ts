@@ -7,14 +7,24 @@ const isPublicRoute = (path: string) =>
   path === "/" ||
   path === "/about";
 
+const isUnaccesibleDuringLoginPath = (path: string) =>
+  path === "/login" || path === "/register" || path === "/";
+
 export async function middleware(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
 
   if (!sessionCookie && !isPublicRoute(request.nextUrl.pathname)) {
-    console.log("Redirected by middleware " + request.url);
+    console.log("Redirected by middleware, require login " + request.url);
     return NextResponse.redirect(new URL("/login", request.url));
   }
   // console.log(sessionCookie);
+
+  if (sessionCookie && isUnaccesibleDuringLoginPath(request.nextUrl.pathname)) {
+    console.log(
+      "Redirected by middleware, unAccesible route during login " + request.url
+    );
+    return NextResponse.redirect(new URL("/posts", request.url));
+  }
   return NextResponse.next();
 }
 

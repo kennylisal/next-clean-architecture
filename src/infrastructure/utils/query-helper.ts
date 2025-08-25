@@ -1,4 +1,4 @@
-import { DatabaseError, DatabaseOperationError } from "@/entities/error/common";
+import { DatabaseError, DataNotFoundError } from "@/entities/error/common";
 import { Knex } from "knex";
 
 export default async function executeQuery<T>(
@@ -9,7 +9,7 @@ export default async function executeQuery<T>(
   try {
     const result = await query;
     if (!result) {
-      throw new DatabaseOperationError(`Requested ${table} data is not found`);
+      throw new DataNotFoundError(`Requested ${table} data is not found`);
     }
     return result;
   } catch (error) {

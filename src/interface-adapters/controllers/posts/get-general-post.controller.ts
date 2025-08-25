@@ -2,6 +2,7 @@ import { PostsQuery } from "@/application/repositories/posts.repository.interfac
 import { IGetGeneralPostUseCase } from "@/application/use-case/posts/get-general-post.usecase";
 import { Post } from "@/entities/models/post";
 import { QueryResponse } from "@/entities/models/response";
+import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
 function presenter(response: QueryResponse<Post[]>) {
   const data = response.data.map((p) => ({
