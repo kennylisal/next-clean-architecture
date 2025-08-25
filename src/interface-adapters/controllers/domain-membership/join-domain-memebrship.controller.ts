@@ -1,4 +1,5 @@
 import { IAuthenticationService } from "@/application/services/authentication.service.interface";
+import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
 import { IJoinDomainMembershipUseCase } from "@/application/use-case/domain-memberships/user-join-domain-membership.usecase";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
@@ -9,10 +10,18 @@ export type IJoinDomainMembershipController = ReturnType<
 export const joinDomainMembershipController =
   (
     joinDomainMembership: IJoinDomainMembershipUseCase,
-    authenticationServices: IAuthenticationService
+    authenticationServices: IAuthenticationService,
+    instrumentationService: IInstrumentationService
   ) =>
   async (domainId: number, headers: ReadonlyHeaders) => {
-    const session = await authenticationServices.getSessionWithHeaders(headers);
-    await joinDomainMembership(session.userId, domainId);
-    return true;
+    return await instrumentationService.startSpan(
+      { name: "joinDomainMembership controller" },
+      async () => {
+        const session = await authenticationServices.getSessionWithHeaders(
+          headers
+        );
+        await joinDomainMembership(session.userId, domainId);
+        return true;
+      }
+    );
   };
