@@ -19,6 +19,7 @@ export function createDomainsModule() {
     .toHigherOrderFunction(getDomainsForUserController, [
       DI_SYMBOLS.IGetDomainUseCase,
       DI_SYMBOLS.IAuthenticationServices,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   domainsModule
@@ -26,6 +27,7 @@ export function createDomainsModule() {
     .toHigherOrderFunction(createDomainController, [
       DI_SYMBOLS.ICraeteDomainsUseCase,
       DI_SYMBOLS.IAuthenticationServices,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   domainsModule
@@ -33,6 +35,7 @@ export function createDomainsModule() {
     .toHigherOrderFunction(getDomainsForCreatePost, [
       DI_SYMBOLS.IGetAvailableDomainsForUserToCreatePostUseCase,
       DI_SYMBOLS.IAuthenticationServices,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   domainsModule

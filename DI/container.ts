@@ -7,6 +7,7 @@ import { createUserModule } from "./modules/user.module";
 import { createAuthorzationModule } from "./modules/authorization.module";
 import { createDomainsModule } from "./modules/domains.module";
 import { createDomainsMembershipModule } from "./modules/domains-membersip.module";
+import { createMonitoringModule } from "./modules/monitoring.module";
 
 // const applicationContainer = createContainer();
 const ApplicationContainer = createContainer();
@@ -36,6 +37,8 @@ ApplicationContainer.load(
   Symbol("TransactionManagerModule"),
   createTransactionManagerModule()
 );
+
+ApplicationContainer.load(Symbol("MonitoringModule"), createMonitoringModule());
 
 ApplicationContainer.load(Symbol("UserModule"), createUserModule());
 export function getInjection<K extends keyof typeof DI_SYMBOLS>(

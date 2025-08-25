@@ -23,6 +23,7 @@ export function createPostsModule() {
     .bind(DI_SYMBOLS.IGetGeneralPostController)
     .toHigherOrderFunction(getGeneralPostController, [
       DI_SYMBOLS.IGetGeneralPostUseCase,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   postsModule
@@ -30,6 +31,15 @@ export function createPostsModule() {
     .toHigherOrderFunction(getPostDetailController, [
       DI_SYMBOLS.IGetPostDetailUseCase,
       DI_SYMBOLS.IAuthenticationServices,
+      DI_SYMBOLS.IInstrumentationService,
+    ]);
+
+  postsModule
+    .bind(DI_SYMBOLS.ICreatePostController)
+    .toHigherOrderFunction(createPostController, [
+      DI_SYMBOLS.ICreatePostUseCase,
+      DI_SYMBOLS.IAuthenticationServices,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   postsModule
@@ -39,13 +49,6 @@ export function createPostsModule() {
       DI_SYMBOLS.IAuthorizationServices,
       DI_SYMBOLS.IUserRepository,
       DI_SYMBOLS.IDomainMembershipsRepository,
-    ]);
-
-  postsModule
-    .bind(DI_SYMBOLS.ICreatePostController)
-    .toHigherOrderFunction(createPostController, [
-      DI_SYMBOLS.ICreatePostUseCase,
-      DI_SYMBOLS.IAuthenticationServices,
     ]);
 
   postsModule

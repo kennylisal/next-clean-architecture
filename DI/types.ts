@@ -4,10 +4,13 @@ import { IPostRepository } from "@/application/repositories/posts.repository.int
 import { IUsersRepository } from "@/application/repositories/users.repository.interface";
 import { IAuthenticationService } from "@/application/services/authentication.service.interface";
 import { IAuthorizationServices } from "@/application/services/authorization.service.interface";
+import { ICrashResporterService } from "@/application/services/crash-reporter.service.interface";
+import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
 import { ItransactionManagerService } from "@/application/services/transaction-manager.service.interface";
 import { ISignInUseCase } from "@/application/use-case/auth/sign-in.use-case";
 import { ISignOutUseCase } from "@/application/use-case/auth/sign-out.use-case";
 import { ISignupUseCase } from "@/application/use-case/auth/sign-up.use-case";
+import { IJoinDomainMembershipUseCase } from "@/application/use-case/domain-memberships/user-join-domain-membership.usecase";
 import { ICreateDomainUseCase } from "@/application/use-case/domain/create-domain.usecase";
 import { IGetAvailableDomainsForUserToCreatePostUseCase } from "@/application/use-case/domain/get-avalilable-domains-for-user-to-craete-post.usecase";
 import { IGetDomainsUseCase } from "@/application/use-case/domain/get-domains.usecase";
@@ -17,6 +20,7 @@ import { IGetPostDetailToReadUseCase } from "@/application/use-case/posts/get-po
 import { ISignInController } from "@/interface-adapters/controllers/auth/sign-in.controller";
 import { ISignOutController } from "@/interface-adapters/controllers/auth/sign-out.controller";
 import { ISignUpController } from "@/interface-adapters/controllers/auth/sign-up.controller";
+import { IJoinDomainMembershipController } from "@/interface-adapters/controllers/domain-membership/join-domain-memebrship.controller";
 import { ICreateDomainController } from "@/interface-adapters/controllers/domains/create-domain.controller";
 import { IGetDomainsForCreatePostController } from "@/interface-adapters/controllers/domains/get-domains-for-create-post.controller";
 import { IGetDomainForUserController } from "@/interface-adapters/controllers/domains/get-domains-for-user.controller";
@@ -43,7 +47,9 @@ export const DI_SYMBOLS = {
   IGetDomainsForCreatePostController: Symbol.for(
     "IGetDomainsForCreatePostController"
   ),
-
+  IJoinDomainMembershipController: Symbol.for(
+    "IJoinDomainMembershipController"
+  ),
   //use case
   IGetPostDetailUseCase: Symbol.for("IGetPostDetailUseCase"),
   IGetGeneralPostUseCase: Symbol.for("IGetGeneralPostUseCase"),
@@ -56,11 +62,14 @@ export const DI_SYMBOLS = {
   IGetAvailableDomainsForUserToCreatePostUseCase: Symbol.for(
     "IGetAvailableDomainsForUserToCreatePostUseCase"
   ),
+  IJoinDomainMembershipUseCase: Symbol.for("IJoinDomainMembershipUseCase"),
 
   //services
   IAuthenticationServices: Symbol.for("IAuthenticationService"),
   IAuthorizationServices: Symbol.for("IAuthorizationServices"),
   ITransactionManagerServices: Symbol.for("ITransactionManagerServices"),
+  ICrashResporterService: Symbol.for("ICrashResporterService"),
+  IInstrumentationService: Symbol.for("IInstrumentationService"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -68,6 +77,8 @@ export interface DI_RETURN_TYPES {
   IAuthenticationServices: IAuthenticationService;
   IAuthorizationServices: IAuthorizationServices;
   ITransactionManagerServices: ItransactionManagerService;
+  IInstrumentationService: IInstrumentationService;
+  ICrashResporterService: ICrashResporterService;
 
   //repositories
   IPostRepository: IPostRepository;
@@ -85,6 +96,7 @@ export interface DI_RETURN_TYPES {
   IGetDomainUseCase: IGetDomainsUseCase;
   ICreatePostUseCase: ICreatePostUseCase;
   IGetAvailableDomainsForUserToCreatePostUseCase: IGetAvailableDomainsForUserToCreatePostUseCase;
+  IJoinDomainMembershipUseCase: IJoinDomainMembershipUseCase;
 
   //controller
   IGetGeneralPostController: IGetGeneralPostController;
@@ -96,4 +108,5 @@ export interface DI_RETURN_TYPES {
   ICreateDomainController: ICreateDomainController;
   ICreatePostController: IcreatePostController;
   IGetDomainsForCreatePostController: IGetDomainsForCreatePostController;
+  IJoinDomainMembershipController: IJoinDomainMembershipController;
 }

@@ -33,14 +33,23 @@ export function createAuthenticationModule() {
 
   authenticationModule
     .bind(DI_SYMBOLS.ISignOutController)
-    .toHigherOrderFunction(signOutController, [DI_SYMBOLS.ISignOutUseCase]);
+    .toHigherOrderFunction(signOutController, [
+      DI_SYMBOLS.ISignOutUseCase,
+      DI_SYMBOLS.IInstrumentationService,
+    ]);
 
   authenticationModule
     .bind(DI_SYMBOLS.ISignInController)
-    .toHigherOrderFunction(signInController, [DI_SYMBOLS.ISignInUseCase]);
+    .toHigherOrderFunction(signInController, [
+      DI_SYMBOLS.ISignInUseCase,
+      DI_SYMBOLS.IInstrumentationService,
+    ]);
 
   authenticationModule
     .bind(DI_SYMBOLS.ISignUpController)
-    .toHigherOrderFunction(signUpController, [DI_SYMBOLS.ISignUpUseCase]);
+    .toHigherOrderFunction(signUpController, [
+      DI_SYMBOLS.ISignUpUseCase,
+      DI_SYMBOLS.IInstrumentationService,
+    ]);
   return authenticationModule;
 }
