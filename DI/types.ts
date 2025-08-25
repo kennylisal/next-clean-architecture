@@ -4,7 +4,7 @@ import { IPostRepository } from "@/application/repositories/posts.repository.int
 import { IUsersRepository } from "@/application/repositories/users.repository.interface";
 import { IAuthenticationService } from "@/application/services/authentication.service.interface";
 import { IAuthorizationServices } from "@/application/services/authorization.service.interface";
-import { ICrashResporterService } from "@/application/services/crash-reporter.service.interface";
+import { ICrashResporterServices } from "@/application/services/crash-reporter.service.interface";
 import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
 import { ItransactionManagerService } from "@/application/services/transaction-manager.service.interface";
 import { ISignInUseCase } from "@/application/use-case/auth/sign-in.use-case";
@@ -78,7 +78,7 @@ export interface DI_RETURN_TYPES {
   IAuthorizationServices: IAuthorizationServices;
   ITransactionManagerServices: ItransactionManagerService;
   IInstrumentationService: IInstrumentationService;
-  ICrashResporterService: ICrashResporterService;
+  ICrashResporterService: ICrashResporterServices;
 
   //repositories
   IPostRepository: IPostRepository;

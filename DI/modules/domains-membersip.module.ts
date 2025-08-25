@@ -8,7 +8,10 @@ export function createDomainsMembershipModule() {
   const domainsMembershipModule = createModule();
   domainsMembershipModule
     .bind(DI_SYMBOLS.IDomainMembershipsRepository)
-    .toClass(DomainsMembershipSQLRepositories);
+    .toClass(DomainsMembershipSQLRepositories, [
+      DI_SYMBOLS.IInstrumentationService,
+      DI_SYMBOLS.ICrashResporterService,
+    ]);
 
   domainsMembershipModule
     .bind(DI_SYMBOLS.IJoinDomainMembershipController)
@@ -22,6 +25,7 @@ export function createDomainsMembershipModule() {
     .bind(DI_SYMBOLS.IJoinDomainMembershipUseCase)
     .toHigherOrderFunction(userJoinDomainMembership, [
       DI_SYMBOLS.IDomainMembershipsRepository,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
   return domainsMembershipModule;
 }

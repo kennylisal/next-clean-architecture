@@ -1,3 +1,3 @@
-export interface ICrashResporterService {
+export interface ICrashResporterServices {
   report(error: unknown): string;
 }

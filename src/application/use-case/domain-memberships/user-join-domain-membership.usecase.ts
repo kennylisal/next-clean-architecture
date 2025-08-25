@@ -1,4 +1,5 @@
 import { IDomainMembershipRepository } from "@/application/repositories/domain_membership.interface";
+import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
 import { AuthorizationError } from "@/entities/error/common";
 
 export type IJoinDomainMembershipUseCase = ReturnType<
@@ -6,19 +7,26 @@ export type IJoinDomainMembershipUseCase = ReturnType<
 >;
 
 export const userJoinDomainMembership =
-  (domainMembership: IDomainMembershipRepository) =>
-  async (userId: string, domainId: number) => {
-    const userHasMembership = domainMembership.getDomainMemberStatus(
-      userId,
-      domainId
+  (
+    domainMembership: IDomainMembershipRepository,
+    instrumentationService: IInstrumentationService
+  ) =>
+  (userId: string, domainId: number) =>
+    instrumentationService.startSpan(
+      { name: "join domainMembership usecase", op: "function" },
+      async () => {
+        const userHasMembership = domainMembership.getDomainMemberStatus(
+          userId,
+          domainId
+        );
+        if (userHasMembership !== undefined) {
+          throw new AuthorizationError("User is already a member");
+        }
+        return domainMembership.createDomainMembership({
+          domain_id: domainId,
+          member_id: userId,
+          member_role: "member",
+          membership_status: "active",
+        });
+      }
     );
-    if (userHasMembership !== undefined) {
-      throw new AuthorizationError("User is already a member");
-    }
-    return domainMembership.createDomainMembership({
-      domain_id: domainId,
-      member_id: userId,
-      member_role: "member",
-      membership_status: "active",
-    });
-  };

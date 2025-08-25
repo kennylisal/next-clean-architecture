@@ -4,6 +4,11 @@ import { UserRepositoryPSQL } from "@/infrastructure/repositories/user.repositor
 
 export function createUserModule() {
   const userModule = createModule();
-  userModule.bind(DI_SYMBOLS.IUserRepository).toClass(UserRepositoryPSQL);
+  userModule
+    .bind(DI_SYMBOLS.IUserRepository)
+    .toClass(UserRepositoryPSQL, [
+      DI_SYMBOLS.IInstrumentationService,
+      DI_SYMBOLS.ICrashResporterService,
+    ]);
   return userModule;
 }

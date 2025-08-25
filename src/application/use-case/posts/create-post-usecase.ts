@@ -2,6 +2,7 @@ import { IDomainMembershipRepository } from "@/application/repositories/domain_m
 import { IPostRepository } from "@/application/repositories/posts.repository.interface";
 import { IUsersRepository } from "@/application/repositories/users.repository.interface";
 import { IAuthorizationServices } from "@/application/services/authorization.service.interface";
+import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
 import { AuthorizationError } from "@/entities/error/common";
 import { toDomainMembershipRole } from "@/entities/models/domain-membership";
 import { CreatePost } from "@/entities/models/post";
@@ -16,27 +17,34 @@ export const createPostUseCase =
     postRepo: IPostRepository,
     authorizationService: IAuthorizationServices,
     userRepo: IUsersRepository,
-    domainMembershipRepo: IDomainMembershipRepository
+    domainMembershipRepo: IDomainMembershipRepository,
+    instrumentationService: IInstrumentationService
   ) =>
-  async (postData: CreatePost, userId: string) => {
-    if (postData.domain_id === GENERAL_DOMAIN_ID) {
-      //general post
-      const userRole: ACCOUNT_ROLE = await userRepo.getUserRole(userId);
-      authorizationService.isAuthorizedForAdministrationalAction(userRole);
-    } else {
-      //domain post
-      const membershipDetail = await domainMembershipRepo.getDomainMemberStatus(
-        userId,
-        postData.domain_id
-      );
-      if (!membershipDetail) {
-        throw new AuthorizationError("User is not part of the domain");
-      }
+  (postData: CreatePost, userId: string) => {
+    return instrumentationService.startSpan(
+      { name: "create post usecase", op: "function" },
+      async () => {
+        if (postData.domain_id === GENERAL_DOMAIN_ID) {
+          //general post
+          const userRole: ACCOUNT_ROLE = await userRepo.getUserRole(userId);
+          authorizationService.isAuthorizedForAdministrationalAction(userRole);
+        } else {
+          //domain post
+          const membershipDetail =
+            await domainMembershipRepo.getDomainMemberStatus(
+              userId,
+              postData.domain_id
+            );
+          if (!membershipDetail) {
+            throw new AuthorizationError("User is not part of the domain");
+          }
 
-      authorizationService.isAuthorizedToCreateOrUpdateOrDelete(
-        RESOURCE.POST,
-        toDomainMembershipRole(membershipDetail.member_role)
-      );
-    }
-    return await postRepo.createPost(postData);
+          authorizationService.isAuthorizedToCreateOrUpdateOrDelete(
+            RESOURCE.POST,
+            toDomainMembershipRole(membershipDetail.member_role)
+          );
+        }
+        return await postRepo.createPost(postData);
+      }
+    );
   };

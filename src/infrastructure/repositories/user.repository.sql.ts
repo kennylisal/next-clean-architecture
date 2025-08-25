@@ -8,23 +8,39 @@ import {
 import { Knex } from "knex";
 import knexDB from "../config/knex_db";
 import executeQuery from "../utils/query-helper";
+import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
+import { ICrashResporterServices } from "@/application/services/crash-reporter.service.interface";
 
 export class UserRepositoryPSQL implements IUsersRepository {
+  constructor(
+    private readonly instrumentationService: IInstrumentationService,
+    private readonly crashReporterService: ICrashResporterServices
+  ) {}
   async getUserRole(id: string): Promise<ACCOUNT_ROLE> {
-    const query = knexDB("user_detail")
-      .where("user_id", id)
-      .select("user_role")
-      .first();
-    const res = await executeQuery(query, "READ", "user_detail");
+    return await this.instrumentationService.startSpan(
+      { name: "user repository > getUserRole" },
+      async () => {
+        const query = knexDB("user_detail")
+          .where("user_id", id)
+          .select("user_role")
+          .first();
+        const res = await executeQuery(
+          query,
+          "READ",
+          "user_detail",
+          this.crashReporterService
+        );
 
-    const role = res as { user_role: string };
-    const userRole = role.user_role as ACCOUNT_ROLE;
+        const role = res as { user_role: string };
+        const userRole = role.user_role as ACCOUNT_ROLE;
 
-    if (!Object.values(ACCOUNT_ROLE).includes(userRole)) {
-      throw new Error(`Invalid user role: ${userRole}`);
-    }
+        if (!Object.values(ACCOUNT_ROLE).includes(userRole)) {
+          throw new Error(`Invalid user role: ${userRole}`);
+        }
 
-    return userRole;
+        return userRole;
+      }
+    );
   }
 
   async createUser(
@@ -32,13 +48,23 @@ export class UserRepositoryPSQL implements IUsersRepository {
     userId: string,
     trx?: Knex.Transaction
   ): Promise<boolean> {
-    const db = trx || knexDB;
-    const query = db("user_detail").insert({
-      user_id: userId,
-      user_role: createUser.role,
-    });
+    return await this.instrumentationService.startSpan(
+      { name: "user repository > createUser" },
+      async () => {
+        const db = trx || knexDB;
+        const query = db("user_detail").insert({
+          user_id: userId,
+          user_role: createUser.role,
+        });
 
-    return await executeQuery(query, "INSERT", "user_detail");
+        return await executeQuery(
+          query,
+          "INSERT",
+          "user_detail",
+          this.crashReporterService
+        );
+      }
+    );
   }
 
   getUserData(id: string): Promise<User> {

@@ -16,7 +16,12 @@ export function createPostsModule() {
   if (process.env.NODE_ENV === "test") {
     postsModule.bind(DI_SYMBOLS.IPostRepository).toClass(MockPostRepositories);
   } else {
-    postsModule.bind(DI_SYMBOLS.IPostRepository).toClass(PostSQLRepositories);
+    postsModule
+      .bind(DI_SYMBOLS.IPostRepository)
+      .toClass(PostSQLRepositories, [
+        DI_SYMBOLS.IInstrumentationService,
+        DI_SYMBOLS.ICrashResporterService,
+      ]);
   }
 
   postsModule
@@ -49,6 +54,7 @@ export function createPostsModule() {
       DI_SYMBOLS.IAuthorizationServices,
       DI_SYMBOLS.IUserRepository,
       DI_SYMBOLS.IDomainMembershipsRepository,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   postsModule
@@ -56,11 +62,15 @@ export function createPostsModule() {
     .toHigherOrderFunction(getPostDetail, [
       DI_SYMBOLS.IPostRepository,
       DI_SYMBOLS.IDomainMembershipsRepository,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   postsModule
     .bind(DI_SYMBOLS.IGetGeneralPostUseCase)
-    .toHigherOrderFunction(getGeneralPost, [DI_SYMBOLS.IPostRepository]);
+    .toHigherOrderFunction(getGeneralPost, [
+      DI_SYMBOLS.IPostRepository,
+      DI_SYMBOLS.IInstrumentationService,
+    ]);
 
   return postsModule;
 }

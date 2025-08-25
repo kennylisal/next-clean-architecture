@@ -18,17 +18,22 @@ export function createAuthenticationModule() {
     .bind(DI_SYMBOLS.ISignOutUseCase)
     .toHigherOrderFunction(signOutUseCase, [
       DI_SYMBOLS.IAuthenticationServices,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   authenticationModule
     .bind(DI_SYMBOLS.ISignInUseCase)
-    .toHigherOrderFunction(signInUseCase, [DI_SYMBOLS.IAuthenticationServices]);
+    .toHigherOrderFunction(signInUseCase, [
+      DI_SYMBOLS.IAuthenticationServices,
+      DI_SYMBOLS.IInstrumentationService,
+    ]);
 
   authenticationModule
     .bind(DI_SYMBOLS.ISignUpUseCase)
     .toHigherOrderFunction(signUpUseCase, [
       DI_SYMBOLS.IAuthenticationServices,
       DI_SYMBOLS.IUserRepository,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   authenticationModule

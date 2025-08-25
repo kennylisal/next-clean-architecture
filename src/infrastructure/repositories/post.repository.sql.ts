@@ -7,30 +7,46 @@ import { CreatePost, Post } from "@/entities/models/post";
 import executeQuery from "../utils/query-helper";
 import { QueryResponse } from "@/entities/models/response";
 import { Knex } from "knex";
+import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
+import { ICrashResporterServices } from "@/application/services/crash-reporter.service.interface";
 export class PostSQLRepositories implements IPostRepository {
+  constructor(
+    private readonly instrumentationService: IInstrumentationService,
+    private readonly crashReporterService: ICrashResporterServices
+  ) {}
   async getPosts(
     request: PostsQuery,
     trx?: Knex.Transaction
   ): Promise<QueryResponse<Post[]>> {
-    const db = trx || knexDB;
-    const page = Math.max(1, request.page);
+    return await this.instrumentationService.startSpan(
+      { name: "post repository > getPosts" },
+      async () => {
+        const db = trx || knexDB;
+        const page = Math.max(1, request.page);
 
-    let query = db("posts")
-      .select("post_id", "title", "created_at", "author", "body")
-      .where("domain_id", "=", request.domain ?? 1);
-    query = this.applyQueryFilters(query, request);
+        let query = db("posts")
+          .select("post_id", "title", "created_at", "author", "body")
+          .where("domain_id", "=", request.domain ?? 1);
+        query = this.applyQueryFilters(query, request);
 
-    const { queryResult, totalCount } = await this.applyQueryPagination(
-      query,
-      request
+        const { queryResult, totalCount } = await this.applyQueryPagination(
+          query,
+          request
+        );
+        const res: Post[] = await executeQuery(
+          queryResult,
+          "SELECT",
+          "POSTS",
+          this.crashReporterService
+        );
+
+        return {
+          page: page,
+          data: res,
+          totalItem: totalCount,
+        };
+      }
     );
-    const res: Post[] = await executeQuery(queryResult, "SELECT", "POSTS");
-
-    return {
-      page: page,
-      data: res,
-      totalItem: totalCount,
-    };
   }
 
   async getUserPost(
@@ -38,26 +54,36 @@ export class PostSQLRepositories implements IPostRepository {
     userId: string,
     trx?: Knex.Transaction
   ): Promise<QueryResponse<Post[]>> {
-    const db = trx || knexDB;
-    const page = Math.max(1, request.page);
+    return await this.instrumentationService.startSpan(
+      { name: "post repository > getuserPost" },
+      async () => {
+        const db = trx || knexDB;
+        const page = Math.max(1, request.page);
 
-    let query = db("posts")
-      .select("posts.*", "domains.domain_name as domain")
-      .where("posts.author", "=", userId)
-      .join("domains", "domains.domain_id", "posts.domain_is");
-    query = this.applyQueryFilters(query, request);
+        let query = db("posts")
+          .select("posts.*", "domains.domain_name as domain")
+          .where("posts.author", "=", userId)
+          .join("domains", "domains.domain_id", "posts.domain_is");
+        query = this.applyQueryFilters(query, request);
 
-    const { queryResult, totalCount } = await this.applyQueryPagination(
-      query,
-      request
+        const { queryResult, totalCount } = await this.applyQueryPagination(
+          query,
+          request
+        );
+        const res: Post[] = await executeQuery(
+          queryResult,
+          "SELECT",
+          "POSTS",
+          this.crashReporterService
+        );
+
+        return {
+          page: page,
+          data: res,
+          totalItem: totalCount,
+        };
+      }
     );
-    const res: Post[] = await executeQuery(queryResult, "SELECT", "POSTS");
-
-    return {
-      page: page,
-      data: res,
-      totalItem: totalCount,
-    };
   }
 
   async getPostForUser(
@@ -65,49 +91,75 @@ export class PostSQLRepositories implements IPostRepository {
     domains: string[],
     trx?: Knex.Transaction
   ): Promise<QueryResponse<Post[]>> {
-    const db = trx || knexDB;
-    const page = Math.max(1, request.page);
+    return await this.instrumentationService.startSpan(
+      { name: "post repository > getPostForUser" },
+      async () => {
+        const db = trx || knexDB;
+        const page = Math.max(1, request.page);
 
-    let query = db("posts")
-      .select("posts.*", "domains.domain_name as domain")
-      .whereRaw(`posts.domain_id in ${domains}`);
-    query = this.applyQueryFilters(query, request);
+        let query = db("posts")
+          .select("posts.*", "domains.domain_name as domain")
+          .whereRaw(`posts.domain_id in ${domains}`);
+        query = this.applyQueryFilters(query, request);
 
-    const { queryResult, totalCount } = await this.applyQueryPagination(
-      query,
-      request
+        const { queryResult, totalCount } = await this.applyQueryPagination(
+          query,
+          request
+        );
+        const res: Post[] = await executeQuery(
+          queryResult,
+          "SELECT",
+          "POSTS",
+          this.crashReporterService
+        );
+
+        return {
+          page: page,
+          data: res,
+          totalItem: totalCount,
+        };
+      }
     );
-    const res: Post[] = await executeQuery(queryResult, "SELECT", "POSTS");
-
-    return {
-      page: page,
-      data: res,
-      totalItem: totalCount,
-    };
   }
 
   async getPost(id: number, trx?: Knex.Transaction): Promise<Post> {
-    const db = trx || knexDB;
-    const query = db("posts")
-      .select("posts.*", "domains.domain_name as domain")
-      .where("post_id", "=", id)
-      .join("domains", "domains.domain_id", "posts.domain_id")
-      .first();
-    return await executeQuery(query, "SELECT", "POSTS");
+    return this.instrumentationService.startSpan(
+      { name: "post repository > getPost" },
+      async () => {
+        const db = trx || knexDB;
+        const query = db("posts")
+          .select("posts.*", "domains.domain_name as domain")
+          .where("post_id", "=", id)
+          .join("domains", "domains.domain_id", "posts.domain_id")
+          .first();
+        return await executeQuery(
+          query,
+          "SELECT",
+          "POSTS",
+          this.crashReporterService
+        );
+      }
+    );
   }
 
   async createPost(
     schema: CreatePost,
     trx?: Knex.Transaction
   ): Promise<number> {
-    const db = trx || knexDB;
-    const query = db("posts").insert(schema).returning("post_id");
-    const result: { post_id: number }[] = await executeQuery(
-      query,
-      "INSERT",
-      "posts"
+    return this.instrumentationService.startSpan(
+      { name: "post repository" },
+      async () => {
+        const db = trx || knexDB;
+        const query = db("posts").insert(schema).returning("post_id");
+        const result: { post_id: number }[] = await executeQuery(
+          query,
+          "INSERT",
+          "posts",
+          this.crashReporterService
+        );
+        return Number(result[0].post_id);
+      }
     );
-    return Number(result[0].post_id);
   }
 
   applyQueryFilters(
@@ -147,7 +199,8 @@ export class PostSQLRepositories implements IPostRepository {
     const countQuery: { total: number } = await executeQuery(
       query.clone().clearSelect().clearOrder().count("* as total").first(),
       "READ",
-      "POSTS"
+      "POSTS",
+      this.crashReporterService
     );
 
     qb.limit(pageSize).offset(offset);

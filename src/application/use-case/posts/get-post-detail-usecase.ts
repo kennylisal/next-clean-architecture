@@ -5,29 +5,39 @@ import {
   AuthorizationError,
   DatabaseOperationError,
 } from "@/entities/error/common";
+import { IInstrumentationService } from "@/application/services/instrumentation.service..interface";
 
 export type IGetPostDetailToReadUseCase = ReturnType<typeof getPostDetail>;
 
 export const getPostDetail =
   (
     postsRepo: IPostRepository,
-    domainMembershipRepo: IDomainMembershipRepository
+    domainMembershipRepo: IDomainMembershipRepository,
+    instrumentationService: IInstrumentationService
   ) =>
-  async (postId: number, requestUserId: string): Promise<Post | undefined> => {
-    const post = await postsRepo.getPost(postId);
+  (postId: number, requestUserId: string): Promise<Post | undefined> =>
+    instrumentationService.startSpan(
+      { name: "get postDetail usecase", op: "function" },
+      async () => {
+        {
+          const post = await postsRepo.getPost(postId);
 
-    if (post.domain_id !== 2020) {
-      try {
-        await domainMembershipRepo.getDomainMemberStatus(
-          requestUserId,
-          post.domain_id
-        );
-      } catch (error) {
-        if (error instanceof DatabaseOperationError) {
-          throw new AuthorizationError("Use is not a member ot post's domain");
+          if (post.domain_id !== 2020) {
+            try {
+              await domainMembershipRepo.getDomainMemberStatus(
+                requestUserId,
+                post.domain_id
+              );
+            } catch (error) {
+              if (error instanceof DatabaseOperationError) {
+                throw new AuthorizationError(
+                  "Use is not a member ot post's domain"
+                );
+              }
+              throw new Error("Unexpected Error");
+            }
+          }
+          return post;
         }
-        throw new Error("Unexpected Error");
       }
-    }
-    return post;
-  };
+    );

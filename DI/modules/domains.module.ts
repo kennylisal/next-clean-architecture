@@ -12,7 +12,10 @@ export function createDomainsModule() {
   const domainsModule = createModule();
   domainsModule
     .bind(DI_SYMBOLS.IDomainRepository)
-    .toClass(DomainsSQLRepositories);
+    .toClass(DomainsSQLRepositories, [
+      DI_SYMBOLS.IInstrumentationService,
+      DI_SYMBOLS.ICrashResporterService,
+    ]);
 
   domainsModule
     .bind(DI_SYMBOLS.IGetDomainForUserController)
@@ -46,12 +49,14 @@ export function createDomainsModule() {
       DI_SYMBOLS.IDomainMembershipsRepository,
       DI_SYMBOLS.IAuthorizationServices,
       DI_SYMBOLS.ITransactionManagerServices,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
   domainsModule
     .bind(DI_SYMBOLS.IGetDomainUseCase)
     .toHigherOrderFunction(getDomains, [
       DI_SYMBOLS.IDomainRepository,
       DI_SYMBOLS.IDomainMembershipsRepository,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
 
   domainsModule
@@ -59,6 +64,7 @@ export function createDomainsModule() {
     .toHigherOrderFunction(getAvailableDomainsForUserToCreatePost, [
       DI_SYMBOLS.IDomainRepository,
       DI_SYMBOLS.IDomainMembershipsRepository,
+      DI_SYMBOLS.IInstrumentationService,
     ]);
   return domainsModule;
 }
