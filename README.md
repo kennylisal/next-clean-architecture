@@ -28,7 +28,9 @@ The system uses a clean, layered architecture to keep business logic isolated fr
 
 Clean Architecture is a software design philosophy introduced by Robert C. Martin (Uncle Bob) that promotes separation of concerns to create systems that are independent of frameworks, databases, and UI technologies. The goal is to make the core business logic testable, maintainable, and adaptable. It achieves this through concentric layers where dependencies flow inward: outer layers depend on inner ones, but not vice versa. This enforces a "dependency rule" and uses principles like Dependency Inversion and Injection to decouple implementations.
 
-In this project, we've implemented a simplified version of Clean Architecture inspired by established patterns. The core business rules (e.g., user authentication, announcement posting) are isolated from Next.js (UI/framework) and PostgreSQL (database), allowing for easy testing and potential swaps (e.g., to a different auth provider). Dependency Injection (via `@evyweb/ioctopus`) wires up layers without tight coupling.
+![Clean Architecture Diagram](./public/architecture.png)
+
+In this project, i've implemented a simplified version of Clean Architecture inspired by (https://github.com/nikolovlazar). The core business rules (e.g., user authentication, announcement posting) are isolated from Next.js (UI/framework) and PostgreSQL (database), allowing for easy testing and potential swaps (e.g., to a different auth provider). Dependency Injection (via `@evyweb/ioctopus`) wires up layers without tight coupling.
 
 ### Layer-by-Layer Explanation
 
@@ -85,6 +87,7 @@ In this project, we've implemented a simplified version of Clean Architecture in
 This project uses [Better Auth](https://better-auth.com/) for secure email/password authentication, integrated via the Infrastructure layer to keep it decoupled from the core. Key files:
 
 - **src/lib/auth.ts**: Server-side configuration. Initializes Better Auth with PostgreSQL connection (`pg_pool`), enables email/password auth without requiring email verification, and uses Next.js cookies plugin for session management.
+
   ```typescript
   import { pg_pool } from "@/infrastructure/config/pg_pool";
   import { betterAuth } from "better-auth";
@@ -99,6 +102,7 @@ This project uses [Better Auth](https://better-auth.com/) for secure email/passw
     plugins: [nextCookies()],
   });
   ```
+
 - **src/lib/auth-client.ts**: Client-side hooks for React integration, providing functions like `signIn`, `signOut`, `signUp`, and `useSession`.
   ```typescript
   import { createAuthClient } from "better-auth/react";
@@ -180,8 +184,6 @@ Docker is used to spin up a PostgreSQL instance with initial schema from `table.
      - `DATABASE_USER`: The username for the database (default: `postgres` for the Docker setup).
      - `DATABASE_PASSWORD`: The password for the database user (default: `password` for the Docker setup).
      - `DATABASE_NAME`: The name of the database (default: `sim_db`).
-     - `CLERK_EMAIL_USER_TEST`: Test email for Clerk authentication (if using Clerk as an alternative or for testing; replace with your test email).
-     - `CLERK_PASSWORD_USER_TEST`: Test password for the Clerk test user (replace with a secure password).
      - `BASE_URL`: The base URL of your application (default: `http://localhost:3000` for development).
      - `BETTER_AUTH_SECRET`: A secret key for Better Auth (generate a strong, random string, e.g., using `openssl rand -base64 32`).
      - `BETTER_AUTH_URL`: The URL where Better Auth is hosted (default: `http://localhost:3000`).
