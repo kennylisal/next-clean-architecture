@@ -1,4 +1,4 @@
-# University Information System (UIS)
+# Clean Architecture on NextJs
 
 This project is a web-based University Information System built with Next.js, following a simplified implementation of Clean Architecture principles. It allows teachers to post announcements, guests to access public announcements, and provides personalized "For You" sections for students based on their enrolled classes, extracurricular activities, or clubs. The system emphasizes separation of concerns for better maintainability, testability, and independence from external frameworks or databases.
 
